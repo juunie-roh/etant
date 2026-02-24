@@ -1,16 +1,9 @@
-import { readFileSync } from "node:fs";
-
-import { parser } from "@juun-roh/spine";
 import TypeScript from "tree-sitter-typescript";
+
+// biome-ignore lint/suspicious/noCommonJs: esbuild text loader bundles this as a string at build time
+const queryString: string = require("./queries/query.scm");
 
 const language = TypeScript.typescript;
 
-export async function parse(file: string) {
-  parser.setLanguage(language as any);
-
-  const source = readFileSync(file, "utf-8");
-  return parser.parse(source);
-}
-
 export { convert } from "./convert.js";
-export { language };
+export { language, queryString };
