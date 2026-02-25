@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: [22.x, 24.x]  # drop 25.x — no prebuilt tree-sitter binaries
+        node-version: [22.x]  # drop 24.x, 25.x — no prebuilt tree-sitter binaries
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
