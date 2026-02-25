@@ -1,4 +1,16 @@
+/* eslint-disable unused-imports/no-unused-imports */
 /* eslint-disable unused-imports/no-unused-vars */
+
+import {
+  named_import_1,
+  named_import_2,
+  named_import_3,
+  //@ts-expect-error mock import statement
+} from "source";
+//@ts-expect-error mock import statement
+import default_module from "source";
+//@ts-expect-error mock import statement
+import * as default_module_alias from "source";
 
 /* =========================
    Primitive Types
@@ -33,8 +45,8 @@ const l: k = k.C;
 ========================= */
 let m: any = 1;
 let n: unknown = "x";
-function o(): void {}
-function p(): never {
+function named_function_declaration(): void {}
+export function exported_named_function_declaration(): never {
   throw new Error("x");
 }
 
@@ -68,12 +80,16 @@ let w: "a" | "b" = "a";
 /* =========================
    Functions
 ========================= */
-function x(a: number, b = 1, ...c: number[]): number {
-  o();
+function function_declaration_with_params(
+  a: number,
+  b = 1,
+  ...c: number[]
+): number {
+  named_function_declaration();
   return a + b + c.length;
 }
 
-const y = (a: number): number => a * 2;
+const named_arrow_function = (a: number): number => a * 2;
 
 /* =========================
    Generics
@@ -91,7 +107,7 @@ type B<T extends number> = T;
 /* =========================
    Classes
 ========================= */
-class C {
+class class_declaration {
   static static = 1;
   readonly readonly: number;
   private private: string;
@@ -107,28 +123,28 @@ class C {
     return this.private;
   }
 
-  private private_method(this: C): this is number {
+  private private_method(this: class_declaration): this is number {
     return typeof this === "number";
   }
 
   private static private_static_method = () => this.static;
 }
 
-class D extends C implements A {
+class D extends class_declaration implements A {
   a = 1;
 }
 
 /* =========================
    Abstract Class
 ========================= */
-abstract class E {
-  abstract a(): void;
+abstract class abstract_class_declaration {
+  abstract abstract_method(): void;
 }
 
 /* =========================
    Accessors
 ========================= */
-class F {
+class class_declaration_with_accessors {
   private a = 0;
   get b() {
     return this.a;
@@ -219,5 +235,5 @@ namespace Z {
 /* =========================
    Modules / Imports / Exports
 ========================= */
-export { a, b, x };
-export default C;
+export { a, b, function_declaration_with_params as x };
+export default class_declaration;
