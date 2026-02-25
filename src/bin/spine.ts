@@ -12,13 +12,13 @@ program
   .description(pkg.description)
   .argument("<file>", "a target file name to parse")
   .argument("[others...]", "additional files")
-  .option("-l, --list", "print a list of nodes on console", true)
+  .option("-l, --list", "print a list of nodes", true)
   .option(
     "-p, --path <config-path>",
     "specify path of configuration",
     "spine.config.json",
   )
-  .action(async (file: string, options, command, others?: string[]) => {
+  .action(async (file, others, options, command) => {
     const config = loadConfig(options.path);
     const parser = Parser.get(config);
     const tree = parser.parse(file);
