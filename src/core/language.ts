@@ -1,13 +1,13 @@
 import { readFileSync } from "node:fs";
 
-import TSParser, { Language } from "tree-sitter";
+import TSParser from "tree-sitter";
 
 import { CoreError } from "./error";
 
 /**
- * Represents a loaded and initialized spine plugin.
+ * Represents a loaded and initialized spine language plugin.
  */
-class Plugin {
+class Language {
   private _parser: TSParser;
 
   private _language: TSParser.Language;
@@ -17,7 +17,7 @@ class Plugin {
   private _convert: any;
 
   constructor(packageName: string) {
-    const { language, convert, queryString } = Plugin.load(packageName);
+    const { language, convert, queryString } = Language.load(packageName);
     this._parser = new TSParser();
     this._language = language;
     this._parser.setLanguage(language);
@@ -50,12 +50,12 @@ class Plugin {
   }
 }
 
-namespace Plugin {
+namespace Language {
   /**
    * Plugin package module interface
    */
   export interface Module {
-    language: Language;
+    language: TSParser.Language;
     convert: any;
     queryString: string;
   }
@@ -64,7 +64,7 @@ namespace Plugin {
    * @param name The npm package name of the plugin
    * @returns The resolved module containing language, query string, and converter
    * @throws If the package cannot be found under `node_modules`
-   * @throws If the loaded module is incompatible with {@link Plugin.Module}
+   * @throws If the loaded module is incompatible with {@link Language.Module}
    */
   export function load(name: string): Module {
     let m: Module;
@@ -95,9 +95,9 @@ namespace Plugin {
       "language" in m &&
       "convert" in m &&
       "queryString" in m &&
-      typeof (m as Plugin.Module).queryString === "string"
+      typeof (m as Language.Module).queryString === "string"
     );
   }
 }
 
-export { Plugin };
+export { Language };

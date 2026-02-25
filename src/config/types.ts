@@ -1,5 +1,5 @@
 interface Config {
-  plugin: {
+  language: {
     ext: string;
     name: string;
   }[];
