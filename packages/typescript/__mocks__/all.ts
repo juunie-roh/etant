@@ -58,6 +58,25 @@ const async_arrow_function = async () => {};
 const arrow_function_with_generics = <T>(a: T): T => a;
 
 /* =========================
+   Nested Declarations
+========================= */
+function nested_function() {
+  function nested_function2() {
+    function nested_function3() {
+      function nested_function4() {
+        function nested_function5() {}
+      }
+    }
+  }
+}
+
+/* =========================
+   Exported Declarations
+========================= */
+
+export function exported_function() {}
+
+/* =========================
    Primitive Types
 ========================= */
 let a: number = 1;
