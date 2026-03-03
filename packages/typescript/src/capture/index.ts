@@ -1,0 +1,1 @@
+export { capture } from "./capture";

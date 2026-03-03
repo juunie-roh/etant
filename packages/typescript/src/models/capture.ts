@@ -3,8 +3,8 @@ import type TSParser from "tree-sitter";
 namespace Capture {
   export interface Base {
     id: string;
-    node?: TSParser.SyntaxNode;
-    body?: TSParser.SyntaxNode;
+    node: TSParser.SyntaxNode;
+    body?: Result;
     /**
      * An identifier.
      */
@@ -14,8 +14,8 @@ namespace Capture {
   }
 
   export interface Function extends Base {
-    generics: string[];
-    params: any;
+    type_params?: string[];
+    params: string[];
     return_type?: string;
   }
 
@@ -27,7 +27,7 @@ namespace Capture {
 
   export interface Import extends Base {
     names?: {
-      type: string;
+      type: "default" | "named_imports" | "namespace_import";
       name: string;
       alias?: string;
     }[];
