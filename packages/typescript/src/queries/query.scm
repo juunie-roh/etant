@@ -1,12 +1,30 @@
+;; Catch errors
+(ERROR) @error
+
 ;; imports
-;; import @names from "@source" with @attr;
-;; TODO: discriminate type imports
+;; import { @name as @alias } from @source;
+;; import * as @name from @source;
+;; import @name from @source;
 (import_statement
-  (import_clause)? @names
+  (import_clause
+    (named_imports 
+      (import_specifier 
+        name: (identifier) @name 
+        alias: (identifier)? @alias
+      )
+    )?
+    (namespace_import (identifier) @name)?
+    (identifier)? @name
+  )? @names
   source: (string) @source
 ) @import
 
-(call_expression) @call
+(expression_statement
+  (call_expression
+    function: (identifier) @name
+    arguments: (arguments (identifier) @arg)* @args
+  )?
+) @calls
 
 ;; function declaration
 ;; function @name<@type_params>(@params): @return_type @body
