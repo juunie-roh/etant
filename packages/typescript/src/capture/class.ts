@@ -15,8 +15,8 @@ function getClasses(
   return groupMatches("class", matches).map((match) => {
     const get = (name: string) => getNode(name, match);
 
-    const name = get("name")?.text;
-    const id = `${parentId}:(class)${name}`;
+    const name = get("name")!.text;
+    const id = `${parentId}:${name}`;
     const heritage = get("heritage");
 
     return {

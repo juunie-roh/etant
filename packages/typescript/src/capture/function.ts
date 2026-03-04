@@ -15,8 +15,8 @@ function getFunctions(
   return groupMatches("function", matches).map((match) => {
     const get = (name: string) => getNode(name, match);
 
-    const name = get("name")?.text;
-    const id = `${parentId}:(function)${name}`;
+    const name = get("name")!.text;
+    const id = `${parentId}:${name}`;
 
     return {
       id,
