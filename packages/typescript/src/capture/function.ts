@@ -16,7 +16,7 @@ function getFunctions(
     const get = (name: string) => getNode(name, match);
 
     const name = get("name")?.text;
-    const id = `${parentId}:function:${name}`;
+    const id = `${parentId}:(function)${name}`;
 
     return {
       id,

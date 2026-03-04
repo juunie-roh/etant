@@ -16,7 +16,7 @@ function getClasses(
     const get = (name: string) => getNode(name, match);
 
     const name = get("name")?.text;
-    const id = `${parentId}:class:${name}`;
+    const id = `${parentId}:(class)${name}`;
     const heritage = get("heritage");
 
     return {
