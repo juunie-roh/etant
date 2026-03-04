@@ -39,8 +39,8 @@ class Parser {
   }
   /**
    * {@link Language | spine `Language`} instances keyed by file extension.
-   * */
-  public get languages() {
+   */
+  get languages(): ReadonlyMap<string, Language> {
     return this._languages;
   }
 
