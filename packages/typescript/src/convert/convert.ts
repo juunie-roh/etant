@@ -13,8 +13,8 @@ function convert(
   const classes = convertClasses(captures.classes, parentId);
 
   return {
-    edges: [...imports.edges, ...functions.edges, ...classes.edges],
     nodes: [...imports.nodes, ...functions.nodes, ...classes.nodes],
+    edges: [...imports.edges, ...functions.edges, ...classes.edges],
   };
 }
 

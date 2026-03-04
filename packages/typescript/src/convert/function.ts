@@ -24,13 +24,14 @@ function convertFunctions(
       from: parentId,
       to: func.id,
       kind: "defines",
+      resolved: true,
     } satisfies Edge);
 
     nodes.push({
       id: func.id,
       kind: "function",
       range,
-      meta: {
+      props: {
         name: func.name,
         type_params: func.type_params,
         params: func.params,

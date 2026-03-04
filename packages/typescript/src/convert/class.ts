@@ -24,13 +24,14 @@ function convertClasses(
       from: parentId,
       to: cls.id,
       kind: "defines",
+      resolved: true,
     } satisfies Edge);
 
     nodes.push({
       id: cls.id,
       kind: "class",
       range,
-      meta: {
+      props: {
         name: cls.name,
         type_params: cls.type_params,
         extends: cls.extends,
