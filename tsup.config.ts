@@ -9,6 +9,7 @@ export default defineConfig([
       "src/bin/spine.ts",
       "src/config/index.ts",
       "src/core/index.ts",
+      "src/utils/index.ts",
     ],
     format: "cjs",
     minify: true,

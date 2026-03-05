@@ -18,6 +18,10 @@
     "./config": {
       "types": "./dist/config/index.d.ts",
       "default": "./dist/config/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "default": "./dist/utils/index.js"
     }
   },
   "scripts": {
@@ -27,7 +31,8 @@
     "lint": "eslint .",
     "prepare": "husky",
     "run:dev": "node dist/bin/spine.js -p __mocks__/spine.config.json",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
+    "test:watch": "vitest watch --coverage",
     "ts": "pnpm --filter @juun-roh/spine-typescript",
     "tsx": "pnpm --filter @juun-roh/spine-tsx"
   },
@@ -57,6 +62,7 @@
     "@types/node": "^25.3.3",
     "@typescript-eslint/eslint-plugin": "^8.56.1",
     "@typescript-eslint/parser": "^8.56.1",
+    "@vitest/coverage-v8": "4.0.18",
     "eslint": "^10.0.2",
     "eslint-plugin-jsdoc": "^62.7.1",
     "eslint-plugin-prettier": "^5.5.5",

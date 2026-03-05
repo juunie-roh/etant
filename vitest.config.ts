@@ -17,7 +17,15 @@ export default defineConfig({
     environment: "node",
     coverage: {
       include: ["src/**", "packages/typescript/src/**"],
-      exclude: ["**/index.*", "**/__mocks__/**", "**/*.test.*"],
+      exclude: [
+        "**/index.*",
+        "**/__mocks__/**",
+        "**/*.test.*",
+        "**/types.ts",
+        "**/models/**",
+        "**/error.ts",
+        "**/*.d.ts",
+      ],
     },
   },
 });
