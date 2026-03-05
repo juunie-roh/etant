@@ -12,7 +12,6 @@ class Parser {
   private _languages: Map<string, Language>;
 
   constructor(config: Config) {
-    this._assertConfig(config);
     this._languages = new Map();
     config.language.forEach((p) => {
       this._languages.set(p.ext, new Language(p.name));
@@ -67,8 +66,6 @@ class Parser {
   destroy(): void {
     this._languages.clear();
   }
-
-  private _assertConfig(config: Config): asserts config is Config {}
 }
 
 export { Parser };
