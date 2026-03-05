@@ -1,4 +1,4 @@
-import { build } from "./build";
+import { merge } from "./merge";
 import { normalize } from "./normalize";
 
-export { build, normalize };
+export { merge, normalize };

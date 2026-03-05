@@ -1,4 +1,4 @@
-import { build, normalize } from "@juun-roh/spine/utils/query";
+import { merge, normalize } from "@juun-roh/spine/utils/query";
 
 import classQuery from "./queries/class.scm";
 import errorQuery from "./queries/error.scm";
@@ -12,6 +12,6 @@ const queries: Record<string, string> = {
   import: normalize(importQuery),
 };
 
-const queryString = build(classQuery, errorQuery, functionQuery, importQuery);
+const queryString = merge(classQuery, errorQuery, functionQuery, importQuery);
 
 export { queries, queryString };
