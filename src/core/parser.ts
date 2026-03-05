@@ -3,6 +3,7 @@ import path from "node:path";
 import type TSParser from "tree-sitter";
 
 import { Config } from "@/config";
+import { defined } from "@/shared/defined";
 
 import { CoreError } from "./error";
 import { Language } from "./language";
@@ -41,12 +42,15 @@ class Parser {
   /**
    * Parses a source file using the language registered for its file extension.
    * @param filePath Path to the source file to parse.
+   * @param source String source to parse.
    * @param oldTree Previous tree for incremental parsing.
    * @param options Parsing options passed to tree-sitter.
    * @throws If no language is registered for the file's extension.
+   * @throws If the language is registered but cannot be found in runtime.
    */
   parse(
     filePath: string,
+    source: string,
     oldTree?: TSParser.Tree | null,
     options?: TSParser.Options,
   ) {
@@ -57,9 +61,16 @@ class Parser {
         `Unsupported file extension: ${ext}`,
       );
 
-    const language = this._languages.get(ext)!;
+    const language = this._languages.get(ext);
+    defined(
+      language,
+      new CoreError(
+        "CORE_UNDEFINED_INSTANCE",
+        `Undefined language corresponding ${ext}`,
+      ),
+    );
 
-    const tree = language.parse(filePath, oldTree, options);
+    const tree = language.parse(filePath, source, oldTree, options);
     return language.extract(filePath, tree.rootNode);
   }
 

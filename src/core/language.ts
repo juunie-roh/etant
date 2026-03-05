@@ -1,5 +1,3 @@
-import { readFileSync } from "node:fs";
-
 import TSParser from "tree-sitter";
 
 import { Edge, Node } from "@/models";
@@ -42,17 +40,18 @@ class Language {
   /**
    * Parses a source file to the {@link TSParser.Tree | tree-sitter `Tree`}.
    * @param filePath Path to the source file to parse.
+   * @param source String source to parse.
    * @param oldTree Previous tree for incremental parsing.
    * @param options Parsing options passed to tree-sitter.
    * @throws If the language plugin fails to parse the file.
    */
   parse(
     filePath: string,
+    source: string,
     oldTree?: TSParser.Tree | null,
     options?: TSParser.Options,
   ): TSParser.Tree {
     try {
-      const source = readFileSync(filePath, "utf-8");
       return this._parser.parse(source, oldTree, options);
     } catch (e) {
       throw new CoreError(

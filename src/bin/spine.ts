@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+import { readFileSync } from "node:fs";
+
 import { program } from "commander";
 
 import { loadConfig } from "@/config";
@@ -21,8 +23,8 @@ program
   )
   .action((file, others, options, command) => {
     const config = loadConfig(options.path);
-    const parser = Parser.get(config);
-    const { nodes, edges } = parser.parse(file);
+    const parser = Parser.create(config);
+    const { nodes, edges } = parser.parse(file, readFileSync(file, "utf-8"));
     // add root file node once
     nodes.push({ id: file, kind: "file" });
 
