@@ -6,16 +6,11 @@
     "**/*.md",
   ],
   "cSpell.words": [
-    "cesiumjs",
     "commitlint",
     "CXXFLAGS",
-    "Czml",
-    "geospatial",
+    "Graphviz",
     "nodenext",
-    "Tileset",
-    "topojson",
-    "tsparser",
-    "webgl"
+    "rankdir",
   ],
   "editor.formatOnSave": false,
   "eslint.enable": true,
