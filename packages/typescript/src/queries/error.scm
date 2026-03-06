@@ -1,2 +1,0 @@
-;; Catch errors
-(ERROR) @error
