@@ -115,13 +115,14 @@ importers:
         version: 5.9.3
 
   packages/typescript:
+    dependencies:
+      tree-sitter:
+        specifier: ^0.25.0
+        version: 0.25.0
     devDependencies:
       '@juun-roh/spine':
         specifier: workspace:*
         version: link:../..
-      tree-sitter:
-        specifier: ^0.25.0
-        version: 0.25.0
       tree-sitter-javascript:
         specifier: ^0.25.0
         version: 0.25.0(tree-sitter@0.25.0)

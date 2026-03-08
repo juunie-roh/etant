@@ -39,9 +39,9 @@
       "types": "./dist/utils/index.d.ts",
       "default": "./dist/utils/index.js"
     },
-    "./utils/query": {
-      "types": "./dist/utils/query/index.d.ts",
-      "default": "./dist/utils/query/index.js"
+    "./query": {
+      "types": "./dist/query/index.d.ts",
+      "default": "./dist/query/index.js"
     }
   },
   "scripts": {

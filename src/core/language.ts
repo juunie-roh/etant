@@ -11,18 +11,12 @@ import type { Graph } from "./graph";
 class Language {
   private _parser: TSParser;
 
-  private _query: TSParser.Query;
-
   private _module: Language.Module;
 
   constructor(packageName: string) {
     this._module = Language.load(packageName);
     this._parser = new TSParser();
     this._parser.setLanguage(this._module.language);
-    this._query = new TSParser.Query(
-      this._module.language,
-      this._module.queryString,
-    );
   }
 
   /**
@@ -30,12 +24,6 @@ class Language {
    */
   get language() {
     return this._module.language;
-  }
-  /**
-   * The {@link TSParser.Query | tree-sitter `Query`} instance used by this plugin.
-   */
-  get query() {
-    return this._query;
   }
 
   /**
@@ -67,7 +55,7 @@ class Language {
     filePath: string,
     node: TSParser.SyntaxNode,
   ): { edges: Edge[]; nodes: Node[] } {
-    const captures = this._module.capture(node, this._query, filePath);
+    const captures = this._module.capture(node, filePath);
     return this._module.convert(captures, filePath);
   }
 
