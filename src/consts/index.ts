@@ -1,0 +1,3 @@
+const SEPARATOR = "::";
+
+export { SEPARATOR };

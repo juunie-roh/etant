@@ -1,3 +1,4 @@
+import { SEPARATOR } from "@/consts";
 import type { Node } from "@/models";
 import { Edge } from "@/models";
 
@@ -20,7 +21,7 @@ function isEdge(item: any): item is Edge {
 }
 
 function parent(id: Node["id"]): Node["id"] | undefined {
-  const i = id.lastIndexOf(":");
+  const i = id.lastIndexOf(SEPARATOR);
   return i > 0 ? id.slice(0, i) : undefined;
 }
 
@@ -62,7 +63,7 @@ function resolve<N extends Node = Node, E extends Edge = Edge>(
       const adj = graph.adjacent(scope);
       if (adj) {
         for (const [targetId] of adj) {
-          if (targetId.endsWith(":" + name)) {
+          if (targetId.endsWith(SEPARATOR + name)) {
             return targetId;
           }
         }
