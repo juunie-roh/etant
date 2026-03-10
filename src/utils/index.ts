@@ -1,4 +1,4 @@
 import { deepMergeArrays } from "./deep-merge-arrays";
-import { createNodeId } from "./node-id";
+import { createCanonicalId } from "./node";
 
-export { createNodeId, deepMergeArrays };
+export { createCanonicalId, deepMergeArrays };
