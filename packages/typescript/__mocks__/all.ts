@@ -6,8 +6,6 @@
 ========================= */
 // @ts-expect-error: mock import source
 import default_module from "default-import-source";
-// @ts-expect-error: mock import source
-import with_attribute from "import-attr-source" with { type: "json" };
 import mixed_default_module, {
   mixed_named_import_1,
   mixed_named_import_2 as mixed_import_alias_2,
@@ -19,9 +17,7 @@ import mixed_default_module_2, * as mixed_namespace from "mixed-import-source_2"
 import { default as default_module_alias } from "named-import-default";
 import {
   named_import_1,
-  named_import_2,
-  named_import_3,
-  named_import_4 as aliased_named_import_4,
+  named_import_2 as aliased_named_import_2,
   // @ts-expect-error: mock import source
 } from "named-import-source";
 // @ts-expect-error: mock import source
@@ -129,6 +125,14 @@ let e: undefined = undefined;
 let f: symbol = Symbol("f");
 let g: bigint = 1n;
 
+const { a: obj_pattern_a, b: obj_pattern_b, c: obj_pattern_c } = { a, b, c };
+const [arr_pattern_a, arr_pattern_b, arr_pattern_c, ...arr_rest_d] = [
+  a,
+  b,
+  c,
+  d,
+];
+
 /* =========================
    Arrays & Tuples
 ========================= */
@@ -218,6 +222,9 @@ class class_declaration {
   readonly readonly: number;
   private private: string;
   protected protected: boolean;
+  100: any;
+  "string-member": string = "string";
+  #private: any;
 
   constructor(b: number, c: string, d: boolean) {
     this.readonly = b;
@@ -347,7 +354,7 @@ namespace Z {
 /* =========================
    Modules / Imports / Exports
 ========================= */
-export { aliased_named_import_4 }; // re-exports
+export { aliased_named_import_2 }; // re-exports
 // @ts-expect-error: mock import source
 export * from "import-source";
 export { a, b, named_function_declaration_with_params as x };
