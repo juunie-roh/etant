@@ -1,4 +1,5 @@
 import type * as Spine from "@juun-roh/spine";
+import type TSParser from "tree-sitter";
 
 // TODO: specify other declaration kinds
 type NodeKind =
@@ -8,7 +9,7 @@ type NodeKind =
   | "class"
   | "abstract_class"
   | "method"
-  | "field"
+  | "member"
   | "variable";
 
 /**
@@ -17,7 +18,7 @@ type NodeKind =
 type Node = Spine.Node<NodeKind>;
 
 // TODO: specify other relationship kinds
-type EdgeKind = "imports" | "calls" | "implements" | "extends" | "defines";
+type EdgeKind = "imports" | "implements" | "extends" | "defines";
 
 /**
  * Override {@link Spine.Edge | `Edge`}'s `kind` with language specific {@link EdgeKind | kinds of edge}.
@@ -26,6 +27,63 @@ type Edge = Spine.Edge<EdgeKind>;
 
 type Graph = Spine.Graph<Node, Edge>;
 
-type QueryTag = "function" | "import" | "class" | "class_body" | "params";
+type QueryTag = {
+  class: {
+    required: "class" | "name" | "body";
+    optional:
+      | "heritage"
+      | "extends"
+      | "type_args"
+      | "extends_body"
+      | "implements"
+      | "type_params";
+  };
+  function: {
+    required: "function" | "name" | "params" | "body";
+    optional: "type_params" | "return_type";
+  };
+  import: {
+    required: "import" | "name" | "source";
+    optional: "alias" | "is_type" | "type";
+  };
+  member: {
+    required: "member" | "name";
+    optional: "modifier" | "is_static" | "type";
+  };
+  method: {
+    required: "method" | "name" | "body" | "params";
+    optional: "modifier" | "is_static" | "type_params" | "return_type";
+  };
+  params: {
+    required: string;
+    optional: string;
+  };
+  variable: {
+    required: "variable" | "name" | "kind";
+    optional: "key" | "type";
+  };
+};
 
-export type { Edge, EdgeKind, Graph, Node, NodeKind, QueryTag };
+type QueryType = keyof QueryTag;
+
+type Capture<K extends keyof QueryTag> = {
+  id: string;
+  node: TSParser.SyntaxNode;
+} & Record<Exclude<QueryTag[K]["required"], K>, unknown> &
+  Partial<Record<QueryTag[K]["optional"], unknown>>;
+
+type CaptureResult = {
+  [K in keyof QueryTag]: Capture<K>[];
+};
+
+export type {
+  Capture,
+  CaptureResult,
+  Edge,
+  EdgeKind,
+  Graph,
+  Node,
+  NodeKind,
+  QueryTag,
+  QueryType,
+};
