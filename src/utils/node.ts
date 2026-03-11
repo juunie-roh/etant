@@ -1,12 +1,5 @@
 import type TSParser from "tree-sitter";
 
-import { SEPARATOR } from "@/consts";
-import { Node } from "@/models";
-
-function createCanonicalId(parentID: string, name: string): Node["id"] {
-  return `${parentID}${SEPARATOR}${name}`;
-}
-
 /**
  *
  * @param type A node-type string.
@@ -26,4 +19,4 @@ function getInnerMostParent(
   return;
 }
 
-export { createCanonicalId, getInnerMostParent };
+export { getInnerMostParent };

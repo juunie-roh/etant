@@ -55,7 +55,7 @@ class Language {
     filePath: string,
     node: TSParser.SyntaxNode,
   ): { edges: Edge[]; nodes: Node[] } {
-    const captures = this._module.capture(node, filePath);
+    const captures = this._module.capture(node);
     return this._module.convert(captures, filePath);
   }
 
