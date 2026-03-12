@@ -1,22 +1,19 @@
 import type TSParser from "tree-sitter";
 
-type QueryTagSpec = {
-  required: string;
-  optional: string;
+import type { QueryTag } from "./global";
+
+type CaptureConfig<Q extends Record<string, QueryTag>> = {
+  [K in keyof Q]?: { include?: string | string[] };
 };
 
-type QueryConfig<Tag extends Record<string, QueryTagSpec>> = {
-  [K in keyof Tag]?: { include?: string | string[] };
-};
-
-type Capture<Spec extends QueryTagSpec> = {
-  [K in Spec["required"]]: TSParser.SyntaxNode;
+type Capture<T extends QueryTag> = {
+  [K in T["required"]]: TSParser.SyntaxNode;
 } & {
-  [K in Spec["optional"]]?: TSParser.SyntaxNode;
+  [K in T["optional"]]?: TSParser.SyntaxNode;
 };
 
-type CaptureResult<Tag extends Record<string, QueryTagSpec>> = {
-  [K in keyof Tag]: Capture<Tag[K]>[];
+type CaptureResult<Q extends Record<string, QueryTag>> = {
+  [K in keyof Q]: Capture<Q[K]>[];
 };
 
-export type { Capture, CaptureResult, QueryConfig, QueryTagSpec };
+export type { Capture, CaptureConfig, CaptureResult };
