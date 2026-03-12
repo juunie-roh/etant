@@ -1,12 +1,8 @@
 import type TSParser from "tree-sitter";
 
 import { SEPARATOR } from "@/consts";
-import type {
-  Capture,
-  CaptureResult,
-  QueryConfig,
-  QueryTagSpec,
-} from "@/models/capture";
+import type { Query } from "@/models";
+import type { Capture, CaptureConfig, CaptureResult } from "@/models/capture";
 import type { QueryMap } from "@/query";
 
 function createCanonicalId(
@@ -25,45 +21,46 @@ function createCanonicalId(
  *
  * The single-tag overload is intended for recursive capture inside convert functions,
  * where only a specific construct is expected within a body node.
+ * @template Q A type defined in form of {@link Query}.
  * @param query The query map containing compiled tree-sitter queries keyed by tag.
  * @param config Per-tag configuration declaring additional parent node types to include.
  * @returns A bound capture function.
  * @example
  * // plugin/src/index.ts
- * export const capture = createCapture<QueryTag>(query, queryConfig);
+ * export const capture = createCapture<Query>(query, queryConfig);
  */
-function createCapture<Tag extends Record<string, QueryTagSpec>>(
-  query: QueryMap<keyof Tag & string>,
-  config: QueryConfig<Tag>,
+function createCapture<Q extends Query>(
+  query: QueryMap<keyof Q & string>,
+  config: CaptureConfig<Q>,
 ) {
   /**
    * Converts a single query match into a raw capture object.
    */
-  function toRawCapture<K extends keyof Tag>(
+  function toCapture<K extends keyof Q>(
     match: TSParser.QueryMatch,
-  ): Capture<Tag[K]> {
+  ): Capture<Q[K]> {
     return Object.fromEntries(
       match.captures.map((c) => [c.name, c.node]),
-    ) as Capture<Tag[K]>;
+    ) as Capture<Q[K]>;
   }
 
   /**
    * Captures all registered query tags against a node.
    */
-  function capture(node: TSParser.SyntaxNode): CaptureResult<Tag>;
+  function capture(node: TSParser.SyntaxNode): CaptureResult<Q>;
   /**
    * Captures all matches for a single query tag.
    */
-  function capture<K extends keyof Tag>(
+  function capture<K extends keyof Q>(
     node: TSParser.SyntaxNode,
     tag: K,
-  ): Capture<Tag[K]>[];
-  function capture<K extends keyof Tag>(
+  ): Capture<Q[K]>[];
+  function capture<K extends keyof Q>(
     node: TSParser.SyntaxNode,
     tag?: K,
-  ): CaptureResult<Tag> | Capture<Tag[K]>[] {
+  ): CaptureResult<Q> | Capture<Q[K]>[] {
     if (!tag) {
-      const result = {} as CaptureResult<Tag>;
+      const result = {} as CaptureResult<Q>;
       for (const key of query.keys()) {
         result[key] = capture(node, key);
       }
@@ -71,8 +68,8 @@ function createCapture<Tag extends Record<string, QueryTagSpec>>(
     }
 
     return query
-      .match(tag as keyof Tag & string, node, config[tag]?.include)
-      .map(toRawCapture);
+      .match(tag as keyof Q & string, node, config[tag]?.include)
+      .map(toCapture);
   }
 
   return capture;
