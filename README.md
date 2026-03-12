@@ -1,18 +1,18 @@
-# Spine
+# semdex
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?logo=opensourceinitiative&logoColor=fff)](https://opensource.org/licenses/MIT)
 
-An AST-based code indexer for AI assistants. Spine parses source files using Tree-Sitter, extracts structural information as a graph of nodes and edges, and exposes it as a queryable tool — so AI assistants operate on code structure rather than text.
+An AST-based code indexer for AI assistants. semdex parses source files using Tree-Sitter, extracts structural information as a graph of nodes and edges, and exposes it as a queryable tool — so AI assistants operate on code structure rather than text.
 
 ## Why
 
 Current AI code assistants retrieve code through text search: semantic similarity on token sequences. This means results match on lexical proximity, not computational structure, and the AI re-parses text into structural understanding on every retrieval.
 
-The insight behind Spine: if operating on ASTs is fundamentally more precise for code transformation, the same applies to code retrieval. The AI doesn't need to understand the AST — it calls the tool, the tool does structural search, and returns precise results. The same way an AI doesn't need to understand SQL internals to query a database.
+The insight behind semdex: if operating on ASTs is fundamentally more precise for code transformation, the same applies to code retrieval. The AI doesn't need to understand the AST — it calls the tool, the tool does structural search, and returns precise results. The same way an AI doesn't need to understand SQL internals to query a database.
 
 ```text
 Current:   AI → text search → fuzzy text matches → AI re-parses into understanding
-Proposed:  AI → Spine → structural matches → AI uses results directly
+Proposed:  AI → semdex → structural matches → AI uses results directly
 ```
 
 Structural search also removes invalid states from the generation space: if a function isn't in the index, it can't be referenced. This doesn't correct hallucinations after the fact — it prevents them.
@@ -74,7 +74,7 @@ Imports are first-class: each imported name (or alias) becomes its own `variable
 
 Each language is a separate workspace package under `packages/<lang>/`. The only currently validated required export is `language` (tree-sitter binding). Plugins are loaded at runtime via `require(packageName)`.
 
-Query strings are split into per-feature `.scm` files and combined using `merge()` from `@juun-roh/spine/utils/query`:
+Query strings are split into per-feature `.scm` files and combined using `merge()` from `semdex/utils/query`:
 
 ```ts
 // packages/typescript/src/query.ts
@@ -84,7 +84,7 @@ const queryString = merge(classQuery, functionQuery, importQuery, ...);
 ### Config
 
 ```json
-{ "language": [{ "ext": ".ts", "name": "@juun-roh/spine-typescript" }] }
+{ "language": [{ "ext": ".ts", "name": "@juun-roh/semdex-typescript" }] }
 ```
 
 ## Packages
@@ -109,7 +109,7 @@ pnpm build && pnpm -r build
 pnpm run:dev
 
 # Run against a project
-node dist/bin/spine.js -p path/to/spine.config.json path/to/file.ts
+node dist/bin/semdex.js -p path/to/semdex.config.json path/to/file.ts
 ```
 
 ## Writing a Language Plugin

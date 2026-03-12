@@ -1,5 +1,5 @@
 {
-  "name": "@juun-roh/spine",
+  "name": "semdex",
   "version": "0.0.0",
   "description": "An AST-based code indexer",
   "keywords": [],
@@ -7,11 +7,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/juunie-roh/spine.git"
+    "url": "git+https://github.com/juunie-roh/semdex.git"
   },
-  "homepage": "https://github.com/juunie-roh/spine#readme",
+  "homepage": "https://github.com/juunie-roh/semdex#readme",
   "bugs": {
-    "url": "https://github.com/juunie-roh/spine/issues"
+    "url": "https://github.com/juunie-roh/semdex/issues"
   },
   "publishConfig": {
     "access": "public"
@@ -21,7 +21,7 @@
   },
   "main": "dist/index.js",
   "module": "dist/index.js",
-  "bin": "dist/bin/spine.js",
+  "bin": "dist/bin/semdex.js",
   "files": [
     "dist"
   ],
@@ -51,11 +51,11 @@
     "dev": "tsup --watch",
     "lint": "eslint .",
     "prepare": "husky",
-    "run:dev": "node dist/bin/spine.js -p __mocks__/spine.config.json",
+    "run:dev": "node dist/bin/semdex.js -p __mocks__/semdex.config.json",
     "test": "vitest run",
     "test:watch": "vitest watch --coverage",
-    "ts": "pnpm --filter @juun-roh/spine-typescript",
-    "tsx": "pnpm --filter @juun-roh/spine-tsx"
+    "ts": "pnpm --filter @juun-roh/semdex-typescript",
+    "tsx": "pnpm --filter @juun-roh/semdex-tsx"
   },
   "dependencies": {
     "commander": "^14.0.3",
@@ -69,8 +69,8 @@
     "@commitlint/format": "^20.4.3",
     "@commitlint/types": "^20.4.3",
     "@eslint/js": "^10.0.1",
-    "@juun-roh/spine-tsx": "workspace:*",
-    "@juun-roh/spine-typescript": "workspace:*",
+    "@juun-roh/semdex-tsx": "workspace:*",
+    "@juun-roh/semdex-typescript": "workspace:*",
     "@types/node": "^25.4.0",
     "@typescript-eslint/eslint-plugin": "^8.57.0",
     "@typescript-eslint/parser": "^8.57.0",
@@ -92,7 +92,7 @@
       "path": "@commitlint/cz-commitlint"
     }
   },
-  "packageManager": "pnpm@10.31.0",
+  "packageManager": "pnpm@10.32.1",
   "pnpm": {
     "overrides": {
       "tmp": ">=0.2.4",

@@ -1,9 +1,9 @@
-import { createCapture } from "@juun-roh/spine/utils";
+import { createCapture } from "semdex/utils";
 
 import { query } from "./query";
-import { QueryTag } from "./types";
+import { Query } from "./types";
 
-const capture = createCapture<QueryTag>(query, {
+const capture = createCapture<Query>(query, {
   abstract_class: { include: "export_statement" },
   class: { include: "export_statement" },
   function: { include: "export_statement" },

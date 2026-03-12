@@ -11,6 +11,7 @@
     "Graphviz",
     "nodenext",
     "rankdir",
+    "semdex"
   ],
   "editor.formatOnSave": false,
   "eslint.enable": true,

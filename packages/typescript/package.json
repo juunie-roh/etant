@@ -1,7 +1,7 @@
 {
-  "name": "@juun-roh/spine-typescript",
+  "name": "@juun-roh/semdex-typescript",
   "version": "0.0.0",
-  "description": "TypeScript plugin for spine",
+  "description": "TypeScript plugin for semdex",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,12 +29,12 @@
     "node": "^22.13.0 || >=24"
   },
   "peerDependencies": {
-    "@juun-roh/spine": "^0.0.0",
+    "semdex": "^0.0.0",
     "tree-sitter-javascript": "^0.25.0",
     "tree-sitter-typescript": "^0.23.2"
   },
   "devDependencies": {
-    "@juun-roh/spine": "workspace:*",
+    "semdex": "workspace:*",
     "tree-sitter-javascript": "^0.25.0",
     "tree-sitter-typescript": "^0.23.2",
     "tsup": "^8.5.1",

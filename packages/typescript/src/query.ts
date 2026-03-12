@@ -1,4 +1,4 @@
-import { QueryMap } from "@juun-roh/spine/query";
+import { QueryMap } from "semdex/query";
 import type TSParser from "tree-sitter";
 import TypeScript from "tree-sitter-typescript";
 
@@ -11,11 +11,11 @@ import memberQueryString from "@/queries/member.scm";
 import methodQueryString from "@/queries/method.scm";
 import variableQueryString from "@/queries/variable.scm";
 
-import type { QueryTag } from "./types";
+import type { Query } from "./types";
 
 const language = TypeScript.typescript as TSParser.Language;
 
-const query = new QueryMap<keyof QueryTag>(language)
+const query = new QueryMap<keyof Query>(language)
   .set("abstract_class", abstractClassQueryString)
   .set("abstract_method", abstractMethodQueryString)
   .set("class", classQueryString)

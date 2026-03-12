@@ -1,4 +1,4 @@
-import { createCanonicalId } from "@juun-roh/spine/utils";
+import { createCanonicalId } from "semdex/utils";
 
 import type { Capture, Edge, Node } from "@/types";
 

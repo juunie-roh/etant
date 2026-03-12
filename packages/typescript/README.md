@@ -1,3 +1,3 @@
-# @juun-roh/spine-typescript
+# @juun-roh/semdex-typescript
 
-A TypeScript grammar provider plugin for @juun-roh/spine core library.
+A TypeScript grammar provider plugin for semdex core library.

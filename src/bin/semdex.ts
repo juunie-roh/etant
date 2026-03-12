@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
 
 import { program } from "commander";
 
@@ -16,7 +17,7 @@ program
   .argument("[others...]", "additional files")
   .option("-l, --list", "print a list of nodes", false)
   .option("-d, --dot [name]", "print the graph in DOT format", false)
-  .option("-o, --output <output>", "output file name", "spine-output.txt")
+  .option("-o, --output <output>", "output file name", false)
   .option(
     "-p, --path <config-path>",
     "specify path of configuration",
@@ -33,6 +34,13 @@ program
 
     if (options.list) {
       console.log(graph.serialize());
+    }
+
+    if (options.output) {
+      writeFileSync(
+        resolve(process.cwd(), options.output),
+        JSON.stringify(graph.serialize()),
+      );
     }
 
     if (options.dot) {

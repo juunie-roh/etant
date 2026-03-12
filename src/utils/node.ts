@@ -1,5 +1,14 @@
 import type TSParser from "tree-sitter";
 
+function getRange(node: TSParser.SyntaxNode): TSParser.Range {
+  return {
+    startIndex: node.startIndex,
+    endIndex: node.endIndex,
+    startPosition: node.startPosition,
+    endPosition: node.endPosition,
+  } satisfies TSParser.Range;
+}
+
 /**
  *
  * @param type A node-type string.
@@ -19,4 +28,4 @@ function getInnerMostParent(
   return;
 }
 
-export { getInnerMostParent };
+export { getInnerMostParent, getRange };

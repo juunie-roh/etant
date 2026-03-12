@@ -2,11 +2,11 @@
   "language": [
     {
       "ext": ".ts",
-      "name": "@juun-roh/spine-typescript"
+      "name": "@juun-roh/semdex-typescript"
     },
     {
       "ext": ".tsx",
-      "name": "@juun-roh/spine-tsx"
+      "name": "@juun-roh/semdex-tsx"
     }
   ]
 }

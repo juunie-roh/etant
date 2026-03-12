@@ -1,6 +1,6 @@
-import type * as Spine from "@juun-roh/spine";
+import type * as semdex from "semdex";
 
-type QueryTag = {
+type Query = {
   abstract_class: {
     required: "node" | "name" | "body";
     optional:
@@ -50,45 +50,67 @@ type QueryTag = {
     required: string;
     optional: string;
   };
+  // type: {
+  //   required: string;
+  //   optional: string;
+  // };
   variable: {
     required: "node" | "name" | "kind";
     optional: "key" | "type";
   };
 };
 
-// TODO: specify other declaration kinds
-type NodeKind = keyof QueryTag | "file" | "module" | "type";
+// TODO: add other declaration kinds
+type NodeKind = keyof Query | "file" | "module" | "type";
 
 /**
- * Override {@link Spine.Node | `Node`}'s `kind` with language specific {@link NodeKind | kinds of node}.
+ * Specify generic types of {@link semdex.Node | `Node`} with language specific {@link NodeKind | kinds of node}.
  */
-type Node = Spine.Node<NodeKind>;
+type Node = semdex.Node<NodeKind>;
 
-// TODO: specify other relationship kinds
+// TODO: add other relationship kinds
 type EdgeKind =
-  | "imports"
-  | "implements"
-  | "extends"
+  | "constrained"
   | "defines"
-  | "constraints";
+  | "extends"
+  | "implements"
+  | "imports";
 
 /**
- * Override {@link Spine.Edge | `Edge`}'s `kind` with language specific {@link EdgeKind | kinds of edge}.
+ * Specify generic types of {@link semdex.Edge | `Edge`} with language specific {@link EdgeKind | kinds of edge}.
  */
-type Edge = Spine.Edge<EdgeKind>;
+type Edge = semdex.Edge<EdgeKind>;
+/**
+ * Specify generic types of {@link semdex.Graph | `Graph`} with {@link Node} and {@link Edge}.
+ */
+type Graph = semdex.Graph<Node, Edge>;
+/**
+ * Specify generic types of {@link semdex.Capture | `Capture`} with plugin-defined {@link Query | query tags}.
+ */
+type Capture<K extends keyof Query> = semdex.Capture<Query[K]>;
+/**
+ * Specify generic types of {@link semdex.CaptureResult | `CaptureResult`} with plugin-defined {@link Query | query tags}.
+ */
+type CaptureResult = semdex.CaptureResult<Query>;
 
-type Graph = Spine.Graph<Node, Edge>;
-
-type Capture<K extends keyof QueryTag> = Spine.Capture<QueryTag[K]>;
-type CaptureResult = Spine.CaptureResult<QueryTag>;
+type Convert = semdex.Convert<Query, Node, Edge>;
+type ConvertResult = semdex.ConvertResult<Node, Edge>;
+type ConvertHandler<K extends keyof Query> = semdex.ConvertHandler<
+  Query[K],
+  Node,
+  Edge
+>;
 
 export type {
   Capture,
   CaptureResult,
+  Convert,
+  ConvertHandler,
+  ConvertResult,
   Edge,
   EdgeKind,
   Graph,
   Node,
   NodeKind,
-  QueryTag,
+  Query,
 };

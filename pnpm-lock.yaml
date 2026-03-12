@@ -41,10 +41,10 @@ importers:
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.0.3(jiti@2.6.1))
-      '@juun-roh/spine-tsx':
+      '@juun-roh/semdex-tsx':
         specifier: workspace:*
         version: link:packages/tsx
-      '@juun-roh/spine-typescript':
+      '@juun-roh/semdex-typescript':
         specifier: workspace:*
         version: link:packages/typescript
       '@types/node':
@@ -95,7 +95,7 @@ importers:
 
   packages/tsx:
     devDependencies:
-      '@juun-roh/spine':
+      semdex:
         specifier: workspace:*
         version: link:../..
       tree-sitter:
@@ -116,7 +116,7 @@ importers:
 
   packages/typescript:
     devDependencies:
-      '@juun-roh/spine':
+      semdex:
         specifier: workspace:*
         version: link:../..
       tree-sitter-javascript:
