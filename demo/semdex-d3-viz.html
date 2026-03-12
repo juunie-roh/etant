@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>semdex Graph Visualizer</title>
+  <title>symbex Graph Visualizer</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -320,7 +320,7 @@
 
 <!-- Top Bar -->
 <div id="topbar">
-  <h1>semdex Graph Visualizer</h1>
+  <h1>symbex Graph Visualizer</h1>
   <label for="file-input">Load JSON</label>
   <input type="file" id="file-input" accept=".json,application/json" />
   <button id="paste-btn">Paste JSON</button>
@@ -379,7 +379,7 @@
   </svg>
 
   <div id="empty-state">
-    <p>Load a semdex graph to visualize it.</p>
+    <p>Load a symbex graph to visualize it.</p>
     <code>const data = graph.serialize();<br>// paste or save data as JSON and load above</code>
   </div>
 
@@ -495,7 +495,7 @@ const SAMPLE_DATA = {
     { id: 'packages/typescript/src/convert/convert.ts', kind: 'file' },
     { id: 'packages/typescript/src/convert/convert.ts|function|convert', kind: 'function' },
     { id: 'tree-sitter', kind: 'module' },
-    { id: 'semdex', kind: 'module' },
+    { id: 'symbex', kind: 'module' },
   ],
   edges: [
     { from: 'src/core/parser.ts', to: 'src/core/parser.ts|class|Parser', kind: 'defines', resolved: true },
@@ -522,7 +522,7 @@ const SAMPLE_DATA = {
     { from: 'packages/typescript/src/capture.ts', to: 'src/utils/factory.ts|function|createCapture', kind: 'imports', resolved: true },
     { from: 'src/core/parser.ts', to: 'tree-sitter', kind: 'imports', resolved: true },
     { from: 'src/core/language.ts', to: 'tree-sitter', kind: 'imports', resolved: true },
-    { from: 'packages/typescript/src/convert/convert.ts', to: 'semdex', kind: 'imports', resolved: true },
+    { from: 'packages/typescript/src/convert/convert.ts', to: 'symbex', kind: 'imports', resolved: true },
   ]
 };
 

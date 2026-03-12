@@ -8,7 +8,7 @@ describe("scmPlugin", () => {
   afterEach(() => vi.restoreAllMocks());
 
   it("has correct plugin name", () => {
-    expect(scmPlugin.name).toBe("semdex-scm");
+    expect(scmPlugin.name).toBe("symbex-scm");
   });
 
   it("registers onLoad for .scm files", () => {

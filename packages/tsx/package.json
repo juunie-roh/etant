@@ -1,7 +1,7 @@
 {
-  "name": "@juun-roh/semdex-tsx",
+  "name": "@juun-roh/symbex-tsx",
   "version": "0.0.0",
-  "description": "TSX plugin for semdex",
+  "description": "TSX plugin for symbex",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,12 +29,12 @@
     "node": "^22.13.0 || >=24"
   },
   "peerDependencies": {
-    "semdex": "^0.0.0",
+    "symbex": "^0.0.0",
     "tree-sitter-javascript": ">=0.25.0",
     "tree-sitter-typescript": ">=0.23.2"
   },
   "devDependencies": {
-    "semdex": "workspace:*",
+    "symbex": "workspace:*",
     "tree-sitter": "^0.25.0",
     "tree-sitter-javascript": "^0.25.0",
     "tree-sitter-typescript": "^0.23.2",

@@ -1,4 +1,4 @@
-import { QueryMap } from "semdex/query";
+import { QueryMap } from "symbex/query";
 import type TSParser from "tree-sitter";
 import TypeScript from "tree-sitter-typescript";
 

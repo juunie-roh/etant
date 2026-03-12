@@ -1,4 +1,4 @@
-import { scmPlugin } from "semdex/query";
+import { scmPlugin } from "symbex/query";
 import { defineConfig } from "tsup";
 
 export default defineConfig({
@@ -9,6 +9,6 @@ export default defineConfig({
   format: "cjs",
   minify: true,
   target: ["node22", "node24", "node25"],
-  external: ["semdex", "tree-sitter-typescript"],
+  external: ["symbex", "tree-sitter-typescript"],
   sourcemap: true,
 });

@@ -1,4 +1,4 @@
-import type * as semdex from "semdex";
+import type * as symbex from "symbex";
 
 export type Query = {
   abstract_class: {
@@ -63,7 +63,7 @@ export type Query = {
 // TODO: add other declaration kinds
 export type NodeKind = keyof Query | "file" | "module" | "type";
 
-export type Node = semdex.Node<NodeKind>;
+export type Node = symbex.Node<NodeKind>;
 
 // TODO: add other relationship kinds
 export type EdgeKind =
@@ -72,22 +72,22 @@ export type EdgeKind =
   | "extends"
   | "implements"
   | "imports";
-export type Edge = semdex.Edge<EdgeKind>;
+export type Edge = symbex.Edge<EdgeKind>;
 
-export type Graph = semdex.Graph<Node, Edge>;
+export type Graph = symbex.Graph<Node, Edge>;
 
 export type SingleCaptureResult<K extends keyof Query> =
-  semdex.SingleCaptureResult<Query[K]>;
+  symbex.SingleCaptureResult<Query[K]>;
 
-export type FullCaptureResult = semdex.FullCaptureResult<Query>;
+export type FullCaptureResult = symbex.FullCaptureResult<Query>;
 
-export type ConvertConfig = semdex.ConvertConfig<Query, Node, Edge>;
+export type ConvertConfig = symbex.ConvertConfig<Query, Node, Edge>;
 
-export type ConvertContext = semdex.ConvertContext<Query, Node, Edge>;
+export type ConvertContext = symbex.ConvertContext<Query, Node, Edge>;
 
-export type ConvertResult = semdex.ConvertResult<Node, Edge>;
+export type ConvertResult = symbex.ConvertResult<Node, Edge>;
 
-export type ConvertHandler<K extends keyof Query> = semdex.ConvertHandler<
+export type ConvertHandler<K extends keyof Query> = symbex.ConvertHandler<
   Query,
   Query[K],
   Node,

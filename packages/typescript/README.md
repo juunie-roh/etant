@@ -1,3 +1,3 @@
-# @juun-roh/semdex-typescript
+# @juun-roh/symbex-typescript
 
-A TypeScript grammar provider plugin for semdex core library.
+A TypeScript grammar provider plugin for symbex core library.

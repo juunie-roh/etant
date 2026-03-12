@@ -1,3 +1,3 @@
-# @juun-roh/semdex-tsx
+# @juun-roh/symbex-tsx
 
 Test plugin for core library registration test.

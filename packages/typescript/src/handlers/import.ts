@@ -1,4 +1,4 @@
-import { createCanonicalId, createConvertResult } from "semdex/utils";
+import { createCanonicalId, createConvertResult } from "symbex/utils";
 
 import type { ConvertHandler, Edge, Node } from "@/types";
 

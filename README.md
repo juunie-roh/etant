@@ -1,18 +1,18 @@
-# semdex
+# symbex
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?logo=opensourceinitiative&logoColor=fff)](https://opensource.org/licenses/MIT)
 
-An AST-based code indexer for AI assistants. semdex parses source files using Tree-Sitter, extracts structural information as a graph of nodes and edges, and exposes it as a queryable tool — so AI assistants operate on code structure rather than text.
+An AST-based code indexer for AI assistants. symbex parses source files using Tree-Sitter, extracts structural information as a graph of nodes and edges, and exposes it as a queryable tool — so AI assistants operate on code structure rather than text.
 
 ## Why
 
 Current AI code assistants retrieve code through text search: semantic similarity on token sequences. This means results match on lexical proximity, not computational structure, and the AI re-parses text into structural understanding on every retrieval.
 
-The insight behind semdex: if operating on ASTs is fundamentally more precise for code transformation, the same applies to code retrieval. The AI doesn't need to understand the AST — it calls the tool, the tool does structural search, and returns precise results. The same way an AI doesn't need to understand SQL internals to query a database.
+The insight behind symbex: if operating on ASTs is fundamentally more precise for code transformation, the same applies to code retrieval. The AI doesn't need to understand the AST — it calls the tool, the tool does structural search, and returns precise results. The same way an AI doesn't need to understand SQL internals to query a database.
 
 ```text
 Current:   AI → text search → fuzzy text matches → AI re-parses into understanding
-Proposed:  AI → semdex → structural matches → AI uses results directly
+Proposed:  AI → symbex → structural matches → AI uses results directly
 ```
 
 Structural search also removes invalid states from the generation space: if a function isn't in the index, it can't be referenced. This doesn't correct hallucinations after the fact — it prevents them.
@@ -75,7 +75,7 @@ Query strings are split into per-feature `.scm` files; the core provides query s
 
 ```ts
 // packages/typescript/tsup.config.ts
-import { scmPlugin } from "semdex/query";
+import { scmPlugin } from "symbex/query";
 import { defineConfig } from "tsup";
 
 export default defineConfig({
@@ -89,7 +89,7 @@ export default defineConfig({
 Not specified yet.
 
 ```json
-{ "language": [{ "ext": ".ts", "name": "@juun-roh/semdex-typescript" }] }
+{ "language": [{ "ext": ".ts", "name": "@juun-roh/symbex-typescript" }] }
 ```
 
 ## Packages

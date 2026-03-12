@@ -4,7 +4,7 @@ import { Graph } from "@/types";
  * Outputs the graph in DOT format for visualization with Graphviz or compatible tools.
  * @param name Optional graph name.
  */
-function toDot(graph: Graph, name = "semdex"): string {
+function toDot(graph: Graph, name = "symbex"): string {
   const lines: string[] = [
     `digraph ${JSON.stringify(name)} {`,
     "  rankdir=LR;",

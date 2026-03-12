@@ -4,8 +4,8 @@ import type TSParser from "tree-sitter";
  * @template K - String union of valid `kind` values for this node. Defaults to
  * `string` for untyped use; narrow it to a literal union to get type-safe `kind` access.
  * @example
- * import type * as semdex from "semdex";
- * type Node = semdex.Node<"node kind" | "string literals">;
+ * import type * as symbex from "symbex";
+ * type Node = symbex.Node<"node kind" | "string literals">;
  */
 interface Node<K extends string = string> {
   /**
@@ -31,8 +31,8 @@ interface Node<K extends string = string> {
  * @template K - String union of valid `kind` values for this edge. Defaults to
  * `string` for untyped use; narrow it to a literal union to get type-safe `kind` access.
  * @example
- * import type * as semdex from "semdex";
- * type Edge = semdex.Edge<"edge kind" | "string literals">;
+ * import type * as symbex from "symbex";
+ * type Edge = symbex.Edge<"edge kind" | "string literals">;
  */
 interface Edge<K extends string = string> {
   /**

@@ -2,11 +2,11 @@
   "language": [
     {
       "ext": ".ts",
-      "name": "@juun-roh/semdex-typescript"
+      "name": "@juun-roh/symbex-typescript"
     },
     {
       "ext": ".tsx",
-      "name": "@juun-roh/semdex-tsx"
+      "name": "@juun-roh/symbex-tsx"
     }
   ]
 }

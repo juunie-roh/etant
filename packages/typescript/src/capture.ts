@@ -1,4 +1,4 @@
-import { createCapture } from "semdex/utils";
+import { createCapture } from "symbex/utils";
 
 import { query } from "./query";
 import { Query } from "./types";

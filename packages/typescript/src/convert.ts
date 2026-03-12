@@ -1,4 +1,4 @@
-import { createConvert } from "semdex/utils";
+import { createConvert } from "symbex/utils";
 
 import { capture } from "./capture";
 import abstractClassHandler from "./handlers/abstract-class";
