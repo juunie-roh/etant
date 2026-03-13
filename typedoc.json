@@ -1,0 +1,29 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "src/config/index.ts",
+    "src/core/index.ts",
+    "src/models/index.ts",
+    "src/query/index.ts",
+    "src/utils/index.ts"
+  ],
+  "out": "docs",
+  "name": "symbex",
+  "includeVersion": true,
+  "excludePrivate": false,
+  "excludeProtected": false,
+  "excludeExternals": true,
+  "externalSymbolLinkMappings": {
+    "tree-sitter": { 
+      "Parser.Language": "https://tree-sitter.github.io/node-tree-sitter/interfaces/Language.html",
+      "Parser.Tree": "https://tree-sitter.github.io/node-tree-sitter/interfaces/Tree.html",
+      "Parser.Range": "https://tree-sitter.github.io/node-tree-sitter/types/Range.html"
+    }
+  },
+  "readme": "README.md",
+  "githubPages": true,
+  "categorizeByGroup": true,
+  "navigationLinks": {
+    "GitHub": "https://github.com/juunie-roh/symbex",
+  }
+}

@@ -71,7 +71,7 @@
     "@commitlint/types": "^20.4.3",
     "@eslint/js": "^10.0.1",
     "@juun-roh/symbex-tsx": "workspace:*",
-    "@juun-roh/symbex-typescript": "workspace:*",
+    "@symbex/typescript": "workspace:*",
     "@types/node": "^25.4.0",
     "@typescript-eslint/eslint-plugin": "^8.57.0",
     "@typescript-eslint/parser": "^8.57.0",
