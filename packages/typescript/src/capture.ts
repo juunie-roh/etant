@@ -11,7 +11,7 @@ const capture = createCapture<QueryConfig>(query, {
 
       if (node.type === "program") {
         const captured = bypass
-          .get("class")
+          .get("export_class")
           .captures(node, { maxStartDepth: 1 })
           .filter((c) => c.name === "node")
           .map((c) => c.node);
@@ -31,7 +31,7 @@ const capture = createCapture<QueryConfig>(query, {
 
       if (node.type === "program") {
         const captured = bypass
-          .get("function")
+          .get("export_function")
           .captures(node, { maxStartDepth: 1 })
           .filter((c) => c.name === "node")
           .map((c) => c.node);
