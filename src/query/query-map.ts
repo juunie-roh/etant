@@ -12,12 +12,20 @@ class QueryMap<K extends string> extends Map<K, TSParser.Query> {
     this._language = language;
   }
 
+  /**
+   * Adds a new {@link TSParser.Query | query} instance initialized by value with a specified key to the map.
+   * @throws If the key is already set in the map.
+   */
   set(key: K, value: string): this;
+  /**
+   * Adds a new {@link TSParser.Query | query} instance with a specified key to the map.
+   * @throws If the key is already set in the map.
+   */
   set(key: K, value: TSParser.Query): this;
   set(key: K, value: string | TSParser.Query): this {
     if (super.has(key)) {
       throw new QueryError(
-        "QUERY_DUPLICATE_KEY",
+        "QUERY_SET_DUPLICATE_KEY",
         `The key name ${key} already exists`,
       );
     }
@@ -32,9 +40,16 @@ class QueryMap<K extends string> extends Map<K, TSParser.Query> {
     return this;
   }
 
+  /**
+   * Returns a specified {@link TSParser.Query | query} instance from the map.
+   * @throws If the key is not set in the map.
+   */
   get(key: K): TSParser.Query {
     if (!super.has(key)) {
-      throw new QueryError("QUERY_INVALID_KEY", `No query found named ${key}`);
+      throw new QueryError(
+        "QUERY_GET_INVALID_KEY",
+        `No query found named ${key}`,
+      );
     }
 
     return super.get(key)!;
