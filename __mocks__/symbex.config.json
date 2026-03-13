@@ -2,7 +2,7 @@
   "language": [
     {
       "ext": ".ts",
-      "name": "@juun-roh/symbex-typescript"
+      "name": "@symbex/typescript"
     },
     {
       "ext": ".tsx",
