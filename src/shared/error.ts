@@ -17,8 +17,8 @@ type SpineErrorCode =
   | "GRAPH_EDGE_RESOLUTION_FAILED"
   | "GRAPH_UNDEFINED_INSTANCE"
   // query
-  | "QUERY_DUPLICATE_KEY"
-  | "QUERY_INVALID_KEY";
+  | "QUERY_SET_DUPLICATE_KEY"
+  | "QUERY_GET_INVALID_KEY";
 
 class SpineError extends Error {
   readonly code: SpineErrorCode;
