@@ -27,8 +27,13 @@ const patternHandler: ConvertHandler<"pattern"> = (
         });
         result.nodes.push({
           id,
+          type: "binding",
           kind: "variable",
           range: getRange(c.node),
+          props: {
+            default: c.default?.text,
+            alias_of: c.key?.text,
+          },
         });
         break;
       case "object_pattern":
@@ -42,6 +47,7 @@ const patternHandler: ConvertHandler<"pattern"> = (
           });
           result.nodes.push({
             id,
+            type: "binding",
             kind: "variable",
             range: getRange(c.node),
           });

@@ -22,6 +22,7 @@ const functionHandler: ConvertHandler<"function"> = (
 
     result.nodes.push({
       id,
+      type: "scope",
       kind: "function",
       range: getRange(node),
       props: {

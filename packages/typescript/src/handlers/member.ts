@@ -16,6 +16,7 @@ const memberHandler: ConvertHandler<"member"> = (captures, parentId) => {
     });
     result.nodes.push({
       id,
+      type: "binding",
       kind: "member",
       range: getRange(node),
       props: {

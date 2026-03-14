@@ -30,6 +30,7 @@ const methodHandler: ConvertHandler<"method"> = (
     });
     result.nodes.push({
       id: id,
+      type: "scope",
       kind: "method",
       range: getRange(node),
       props: {

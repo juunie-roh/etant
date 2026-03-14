@@ -20,6 +20,7 @@ const classHandler: ConvertHandler<"class"> = (
     });
     result.nodes.push({
       id,
+      type: "scope",
       kind: "class",
       range: getRange(node),
       props: {

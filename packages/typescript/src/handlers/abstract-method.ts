@@ -19,6 +19,7 @@ const abstractMethodHandler: ConvertHandler<"abstract_method"> = (
     });
     result.nodes.push({
       id,
+      type: "binding",
       kind: "abstract_method",
       range: getRange(node),
 

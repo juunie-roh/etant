@@ -25,6 +25,7 @@ const importHandler: ConvertHandler<"import"> = (captures, parentId) => {
       });
       result.nodes.push({
         id,
+        type: "binding",
         kind: isType ? "type" : "variable",
         props: alias
           ? {
@@ -47,6 +48,7 @@ const importHandler: ConvertHandler<"import"> = (captures, parentId) => {
 
     result.nodes.push({
       id: source,
+      type: "scope",
       kind: "module",
     });
   });

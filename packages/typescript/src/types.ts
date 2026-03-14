@@ -71,9 +71,10 @@ export type Node = symbex.Node<NodeKind>;
 export type EdgeKind =
   | "constrained"
   | "defines"
-  | "extends"
+  | "inherits"
   | "implements"
   | "imports";
+
 export type Edge = symbex.Edge<EdgeKind>;
 
 export type Graph = symbex.Graph<Node, Edge>;

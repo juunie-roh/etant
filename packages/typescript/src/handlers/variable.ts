@@ -39,6 +39,7 @@ const variableHandler: ConvertHandler<"variable"> = (
       });
       result.nodes.push({
         id,
+        type: "binding",
         kind: "variable",
         range: getRange(node),
         props: {

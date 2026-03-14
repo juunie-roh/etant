@@ -20,6 +20,7 @@ const abstractClassHandler: ConvertHandler<"abstract_class"> = (
     });
     result.nodes.push({
       id,
+      type: "scope",
       kind: "abstract_class",
       range: getRange(node),
       props: {
