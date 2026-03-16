@@ -29,7 +29,7 @@ symbex separates concerns across three layers:
 - `capture` — runs tree-sitter queries against AST nodes and returns typed match results. Complete, no filtering.
 - `convert` — transforms captures into graph nodes and edges. Semantic decisions happen here: what kind to assign, what edges to emit, when to recurse into child scopes.
 
-**Core** — owns the schema, the graph, and the query API. Receives `Node[]` and `Edge[]` from plugins without knowing anything about the source language. Builds the graph, resolves unresolved edge targets by walking the scope chain, and exposes the result for consumption.
+**Core** — owns the schema, the graph, and the query API. Receives `Node[]` and `Edge[]` from plugins without knowing anything about the source language. Builds the graph and exposes it for consumption. Name resolution by walking the scope chain is available as an on-demand operation rather than applied automatically at build time.
 
 **Abstraction plugin** *(planned)* — a lens over the raw graph. Decides what story to tell from the plugin output: what constructs are promoted to first-class nodes, what gets flattened, what gets excluded. Multiple abstraction plugins can produce different views — a mind map, a full-fidelity graph, a public API surface — over the same underlying data.
 
@@ -37,20 +37,20 @@ symbex separates concerns across three layers:
 
 All output is two types:
 
-- **Node** — a code entity with a unique human-readable `signature` (e.g. `src/utils/parse.ts::parseDate`, `src/logger.ts::Logger::dispatch`), a `kind`, a `type` role (`scope`, `binding`, or `anonymous`), an optional source `range`, and optional language-specific `props`.
-- **Edge** — a directed relationship between two nodes (`from` → `to`) with a `kind` and optional `props`. Edges may be unresolved (target referenced by name) or resolved (target is a full signature) at build time.
+- **Node** — a code entity with a `path: NodePath` (an array of scope-chain segments, e.g. `["src/utils/parse.ts", "parseDate"]`), hashed to a compact `NodeId` inside the graph. A `kind` classifies the construct, a `type` role classifies its scope behavior, an optional `range` points back to the source location, and optional language-specific `props` are carried through opaquely.
+- **Edge** — a directed relationship between two nodes (`from` → `to`, both `NodePath`) with a `kind` and optional `props`.
 
-Node signatures use `::` as a scope delimiter. The delimiter encodes containment, which the graph's resolver uses to walk upward when resolving unresolved names.
+The graph encodes node paths as SHA-256-derived `NodeId` hashes via `HashRegistry`, enabling O(1) lookup in both directions without exposing the path structure to graph internals.
 
 ### Node Roles
 
-Every node falls into one of three categories:
+Every node has a `type` field with one of three values:
 
-| Role | Description | Example `kind` values |
-| ---- | ----------- | --------------------- |
-| **scope** | Introduces names, is not itself introduced | `file`, `module` |
-| **scope + binding** | Introduces names and is introduced into a parent scope | `function`, `class`, `method` |
-| **binding** | Is introduced, does not introduce names | `variable`, `member`, `import` |
+| `type` | Description | Example `kind` values |
+| ------ | ----------- | --------------------- |
+| `"scope"` | A named scope — introduces names and is itself introduced into a parent scope | `function`, `class`, `method` |
+| `"anonymous"` | An unnamed scope — introduces names but has no binding identity of its own | `file`, `module` |
+| `"binding"` | A pure binding — is introduced into a scope, does not introduce names | `variable`, `member`, `import` |
 
 ### Plugin System
 
