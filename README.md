@@ -49,7 +49,7 @@ Every node has a `type` field with one of three values:
 | `type` | Description | Example `kind` values |
 | ------ | ----------- | --------------------- |
 | `"scope"` | A named scope — introduces names and is itself introduced into a parent scope | `function`, `class`, `method` |
-| `"anonymous"` | An unnamed scope — introduces names but has no binding identity of its own | `file`, `module` |
+| `"anonymous"` | An unnamed scope — introduces names but has no binding identity of its own | `if`, `switch`, `for`, `while` |
 | `"binding"` | A pure binding — is introduced into a scope, does not introduce names | `variable`, `member`, `import` |
 
 ### Plugin System
@@ -95,6 +95,6 @@ pnpm test
 To work on a specific language plugin:
 
 ```bash
-pnpm ts <script>   # --filter @juun-roh/spine-typescript
-pnpm tsx <script>  # --filter @juun-roh/spine-tsx
+pnpm ts <script>   # --filter @symbex/typescript
+pnpm tsx <script>  # --filter @juun-roh/symbex-tsx
 ```
