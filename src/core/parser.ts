@@ -2,28 +2,26 @@ import path from "node:path";
 
 import type TSParser from "tree-sitter";
 
-import type { Edge, Node } from "@/models";
 import type { Config } from "@/models/config";
 import { defined } from "@/shared/defined";
 
 import CoreError from "./error";
-import type Graph from "./graph";
-import Language from "./language";
+import LanguagePlugin from "./language-plugin";
 
 class Parser {
-  private _languages: Map<string, Language>;
+  private _languages: Map<string, LanguagePlugin>;
 
   constructor(config: Config) {
     this._languages = new Map();
     config.language.forEach((p) => {
-      this._languages.set(p.ext, new Language(p.name));
+      this._languages.set(p.ext, new LanguagePlugin(p.name));
     });
   }
 
   /**
-   * {@link Language | spine `Language`} instances keyed by file extension.
+   * {@link LanguagePlugin | spine `Language`} instances keyed by file extension.
    */
-  get languages(): ReadonlyMap<string, Language> {
+  get languages(): ReadonlyMap<string, LanguagePlugin> {
     return this._languages;
   }
 
@@ -57,21 +55,13 @@ class Parser {
   destroy(): void {
     this._languages.clear();
   }
-  // TEMPORARY
-  toDot<N extends Node = Node, E extends Edge = Edge>(
-    filePath: string,
-    graph: Graph<N, E>,
-  ) {
-    const language = this._getLanguage(filePath);
-    return language.toDot(graph);
-  }
 
   /**
    * @param filePath Path to the source file to parse.
    * @throws If no language is registered for the file's extension.
    * @throws If the language is registered but cannot be found in runtime.
    */
-  private _getLanguage(filePath: string): Language {
+  private _getLanguage(filePath: string): LanguagePlugin {
     const ext = path.extname(filePath);
     if (!this.languages.has(ext))
       throw new CoreError(
