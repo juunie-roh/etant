@@ -29,11 +29,11 @@
     "node": "^22.13.0 || >=24"
   },
   "dependencies": {
-    "@symbex/typescript": "workspace:*"
+    "@symbex/typescript": "^0.0.1"
   },
   "peerDependencies": {
     "symbex": "^0.0.1",
-    "tree-sitter-typescript": ">=0.23.2"
+    "tree-sitter-typescript": "^0.23.2"
   },
   "devDependencies": {
     "symbex": "workspace:*",
