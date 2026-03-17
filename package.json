@@ -59,8 +59,8 @@
     "run:dev": "node dist/bin/symbex.js -p __mocks__/symbex.config.json",
     "test": "vitest run",
     "test:watch": "vitest watch --coverage",
-    "ts": "pnpm --filter @juun-roh/symbex-typescript",
-    "tsx": "pnpm --filter @juun-roh/symbex-tsx"
+    "ts": "pnpm --filter @symbex/typescript",
+    "tsx": "pnpm --filter @symbex/tsx"
   },
   "dependencies": {
     "commander": "^14.0.3",
@@ -74,7 +74,7 @@
     "@commitlint/format": "^20.5.0",
     "@commitlint/types": "^20.5.0",
     "@eslint/js": "^10.0.1",
-    "@juun-roh/symbex-tsx": "workspace:*",
+    "@symbex/tsx": "workspace:*",
     "@symbex/typescript": "workspace:*",
     "@types/node": "^25.5.0",
     "@typescript-eslint/eslint-plugin": "^8.57.0",
