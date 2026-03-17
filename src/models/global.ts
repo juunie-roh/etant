@@ -1,5 +1,10 @@
 import type TSParser from "tree-sitter";
 
+import type { QueryMap } from "@/query";
+
+import type { CaptureConfig } from "./capture";
+import type { ConvertConfig } from "./convert";
+
 /**
  * @template T A type to make a brand on.
  * @template K A name of brand.
@@ -68,9 +73,21 @@ export interface Edge<K extends string = string> {
   props?: Record<string, unknown>;
 }
 
-export type QueryTag = {
-  required: string;
-  optional: string;
-};
+export type QueryConfig = Record<
+  string,
+  { required: readonly string[]; optional: readonly string[] }
+>;
 
-export type QueryConfig = Record<string, QueryTag>;
+export type PluginDescriptor<
+  Q extends QueryConfig,
+  N extends readonly string[],
+  E extends readonly string[],
+> = {
+  language: TSParser.Language;
+  query: QueryMap<keyof Q & string>;
+  queryConfig: Q;
+  captureConfig: CaptureConfig<Q>;
+  convertConfig: ConvertConfig<Q, Node<N[number]>, Edge<E[number]>>;
+  nodeKind: N;
+  edgeKind: E;
+};

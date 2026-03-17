@@ -1,6 +1,7 @@
 import TSParser from "tree-sitter";
 
-import type { Edge, Node, NodePath } from "@/models";
+import type { Edge, Node, NodePath, QueryConfig } from "@/models";
+import { createCapture, createConvert } from "@/utils";
 
 import CoreError from "./error";
 
@@ -12,8 +13,27 @@ class LanguagePlugin {
 
   private _module: LanguagePlugin.Module;
 
-  constructor(packageName: string) {
-    this._module = LanguagePlugin.load(packageName);
+  private _capture: ReturnType<typeof createCapture<QueryConfig>>;
+
+  private _convert: ReturnType<typeof createConvert<QueryConfig, Node, Edge>>;
+
+  constructor(name: string) {
+    this._module = LanguagePlugin.load(name);
+
+    type Q = typeof this._module.queryConfig;
+    type N = (typeof this._module.nodeKind)[number];
+    type E = (typeof this._module.edgeKind)[number];
+
+    this._capture = createCapture<Q>(
+      this._module.query,
+      this._module.captureConfig,
+    );
+
+    this._convert = createConvert<Q, N, E>(
+      this._capture,
+      this._module.convertConfig,
+    );
+
     this._parser = new TSParser();
     this._parser.setLanguage(this._module.language);
   }
@@ -54,8 +74,8 @@ class LanguagePlugin {
     filePath: string,
     node: TSParser.SyntaxNode,
   ): { edges: Edge[]; nodes: Node[] } {
-    const captures = this._module.capture(node);
-    return this._module.convert(captures, [filePath] as NodePath);
+    const captures = this._capture(node);
+    return this._convert(captures, [filePath] as NodePath);
   }
 }
 
@@ -87,13 +107,13 @@ namespace LanguagePlugin {
     } catch (e) {
       throw new CoreError(
         "CORE_PLUGIN_LOAD_FAILED",
-        `Plugin "${name}" not found in node_modules`,
+        `Plugin "${name}" not found`,
         { cause: e },
       );
     }
 
     try {
-      m = require(name);
+      m = require(name).default;
     } catch (e) {
       throw new CoreError(
         "CORE_PLUGIN_LOAD_FAILED",
@@ -102,12 +122,7 @@ namespace LanguagePlugin {
       );
     }
 
-    if (!isModule(m)) {
-      throw new CoreError(
-        "CORE_PLUGIN_LOAD_FAILED",
-        `Failed to load plugin "${name}": module is incompatible with Plugin.Module.`,
-      );
-    }
+    assertModule(m, name);
 
     return m;
   }
@@ -116,28 +131,39 @@ namespace LanguagePlugin {
    *
    * @param m A module to validate.
    */
-  function isModule(m: unknown): m is Module {
-    return (
+  function assertModule(m: unknown, name: string): asserts m is Module {
+    if (
       typeof m === "object" &&
       m !== null &&
       "language" in m &&
       typeof m.language === "object" &&
       m.language !== null &&
       isLanguage(m.language)
+    )
+      return;
+
+    throw new CoreError(
+      "CORE_PLUGIN_LOAD_FAILED",
+      `Failed to load plugin "${name}": module is incompatible with plugin interface.`,
     );
   }
 
-  function isLanguage(lang: unknown): lang is TSParser.Language {
+  /**
+   * Returns whether.
+   * @param language {@link TSParser.Language | Language} instance to validate.
+   */
+  function isLanguage(language: unknown): language is TSParser.Language {
     return (
-      typeof lang === "object" &&
-      lang !== null &&
-      "name" in lang &&
-      lang.name !== null &&
-      "language" in lang &&
-      lang.language !== null &&
-      "nodeTypeInfo" in lang &&
-      lang.nodeTypeInfo !== null &&
-      Array.isArray(lang.nodeTypeInfo)
+      typeof language === "object" &&
+      language !== null &&
+      "name" in language &&
+      language.name !== null &&
+      typeof language.name === "string" &&
+      "language" in language &&
+      language.language !== null &&
+      "nodeTypeInfo" in language &&
+      language.nodeTypeInfo !== null &&
+      Array.isArray(language.nodeTypeInfo)
     );
   }
 }
