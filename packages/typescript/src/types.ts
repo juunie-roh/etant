@@ -4,25 +4,16 @@ import { queryConfig } from "./query";
 
 export type QueryConfig = typeof queryConfig;
 
-export const nodeKind = [
-  ...(Object.keys(queryConfig) as (keyof typeof queryConfig)[]),
-  "module",
-  "type",
-] as const;
-
-export type NodeKind = (typeof nodeKind)[number];
+export type NodeKind = keyof QueryConfig | "module" | "type";
 
 export type Node = symbex.Node<NodeKind>;
 
-export const edgeKind = [
-  "constrained",
-  "defines",
-  "inherits",
-  "implements",
-  "imports",
-] as const;
-
-export type EdgeKind = (typeof edgeKind)[number];
+export type EdgeKind =
+  | "constrained"
+  | "defines"
+  | "inherits"
+  | "implements"
+  | "imports";
 
 export type Edge = symbex.Edge<EdgeKind>;
 
@@ -48,8 +39,4 @@ export type ConvertHandler<K extends keyof QueryConfig> = symbex.ConvertHandler<
   Edge
 >;
 
-export type PluginDescriptor = symbex.PluginDescriptor<
-  QueryConfig,
-  typeof nodeKind,
-  typeof edgeKind
->;
+export type PluginDescriptor = symbex.PluginDescriptor<QueryConfig, Node, Edge>;
