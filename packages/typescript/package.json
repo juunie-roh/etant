@@ -1,6 +1,6 @@
 {
   "name": "@symbex/typescript",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "TypeScript plugin for symbex",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -30,7 +30,7 @@
     "node": "^22.13.0 || >=24"
   },
   "peerDependencies": {
-    "symbex": "^0.0.1",
+    "symbex": "^0.0.2",
     "tree-sitter-typescript": "^0.23.2"
   },
   "devDependencies": {

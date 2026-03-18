@@ -1,6 +1,6 @@
 {
   "name": "symbex",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A language-agnostic scope graph provider",
   "keywords": [],
   "author": "Juun",
