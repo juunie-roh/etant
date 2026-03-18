@@ -102,8 +102,8 @@ importers:
   packages/tsx:
     dependencies:
       '@symbex/typescript':
-        specifier: ^0.0.1
-        version: 0.0.1(symbex@)(tree-sitter-javascript@0.23.1(tree-sitter@0.25.0))(tree-sitter-typescript@0.23.2(tree-sitter@0.25.0))
+        specifier: ^0.0.2
+        version: 0.0.2(symbex@)(tree-sitter-typescript@0.23.2(tree-sitter@0.25.0))
     devDependencies:
       symbex:
         specifier: workspace:*
@@ -753,12 +753,11 @@ packages:
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
-  '@symbex/typescript@0.0.1':
-    resolution: {integrity: sha512-npYq3A12VoSLwxw6u/Ri7DYDXDniWl/3+WUOFgC1V20Z+O9RuIK91Hugq38iMeoL8Q/e+zxhR0uUbI4Md8sKIQ==}
+  '@symbex/typescript@0.0.2':
+    resolution: {integrity: sha512-CRHoiMq2+vK9gNsKOUNJqndG6AWyv6KQvb4lrMXePfRcLF6U5T4W6/W8QgQp5/iHJ0vEz9rnsIhR30Ag57SyNg==}
     engines: {node: ^22.13.0 || >=24}
     peerDependencies:
-      symbex: ^0.0.1
-      tree-sitter-javascript: ^0.25.0
+      symbex: ^0.0.2
       tree-sitter-typescript: ^0.23.2
 
   '@types/chai@5.2.3':
@@ -2977,10 +2976,9 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@symbex/typescript@0.0.1(symbex@)(tree-sitter-javascript@0.23.1(tree-sitter@0.25.0))(tree-sitter-typescript@0.23.2(tree-sitter@0.25.0))':
+  '@symbex/typescript@0.0.2(symbex@)(tree-sitter-typescript@0.23.2(tree-sitter@0.25.0))':
     dependencies:
       symbex: 'link:'
-      tree-sitter-javascript: 0.23.1(tree-sitter@0.25.0)
       tree-sitter-typescript: 0.23.2(tree-sitter@0.25.0)
 
   '@types/chai@5.2.3':
