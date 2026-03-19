@@ -17,7 +17,7 @@ const memberHandler: ConvertHandler<"member"> = (captures, parent) => {
       path,
       type: "binding",
       kind: "member",
-      range: getRange(node),
+      at: getRange(node),
       props: {
         modifier: modifier?.text,
         is_static: is_static ? true : false,

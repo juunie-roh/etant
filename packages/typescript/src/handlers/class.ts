@@ -21,7 +21,7 @@ const classHandler: ConvertHandler<"class"> = (
       path,
       type: "scope",
       kind: "class",
-      range: getRange(node),
+      at: getRange(node),
       props: {
         type_params: type_params?.text,
         extends: ext?.text,

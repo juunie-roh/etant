@@ -23,7 +23,7 @@ const functionHandler: ConvertHandler<"function"> = (
       path,
       type: "scope",
       kind: "function",
-      range: getRange(node),
+      at: getRange(node),
       props: {
         is_async: is_async ? true : false,
         type_params: type_params?.text,

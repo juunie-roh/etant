@@ -28,7 +28,7 @@ const patternHandler: ConvertHandler<"pattern"> = (
           path,
           type: "binding",
           kind: "variable",
-          range: getRange(c.node),
+          at: getRange(c.node),
           props: {
             default: c.default?.text,
             alias_of: c.key?.text,
@@ -47,7 +47,7 @@ const patternHandler: ConvertHandler<"pattern"> = (
             path,
             type: "binding",
             kind: "variable",
-            range: getRange(c.node),
+            at: getRange(c.node),
           });
         }
         if (c.pattern) {

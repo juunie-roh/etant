@@ -50,17 +50,17 @@ export type QueryConfig = {
     required: "node";
     optional: "pattern" | "name" | "default" | "key";
   };
-  // type: {
-  //   required: string;
-  //   optional: string;
-  // };
+  type: {
+    required: string;
+    optional: string;
+  };
   variable: {
     required: "node" | "pattern" | "kind";
     optional: "name" | "type";
   };
 };
 
-export type NodeKind = keyof QueryConfig | "module" | "type";
+export type NodeKind = keyof QueryConfig;
 
 export type Node = symbex.Node<NodeKind>;
 

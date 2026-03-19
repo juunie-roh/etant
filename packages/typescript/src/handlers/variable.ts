@@ -40,7 +40,7 @@ const variableHandler: ConvertHandler<"variable"> = (
         path,
         type: "binding",
         kind: "variable",
-        range: getRange(node),
+        at: getRange(node),
         props: {
           kind: kind.text,
           type: type?.text,

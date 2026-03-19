@@ -20,7 +20,7 @@ const abstractMethodHandler: ConvertHandler<"abstract_method"> = (
       path,
       type: "binding",
       kind: "abstract_method",
-      range: getRange(node),
+      at: getRange(node),
 
       props: {
         modifier: modifier?.text ?? "public",

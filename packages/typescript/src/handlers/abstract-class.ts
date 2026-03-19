@@ -21,7 +21,7 @@ const abstractClassHandler: ConvertHandler<"abstract_class"> = (
       path,
       type: "scope",
       kind: "abstract_class",
-      range: getRange(node),
+      at: getRange(node),
       props: {
         type_params: type_params?.text,
         extends: ext?.text,

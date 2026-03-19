@@ -31,7 +31,7 @@ const methodHandler: ConvertHandler<"method"> = (
       path,
       type: "scope",
       kind: "method",
-      range: getRange(node),
+      at: getRange(node),
       props: {
         name: name.text,
         modifier: modifier?.text ?? "public",
