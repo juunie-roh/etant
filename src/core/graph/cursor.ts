@@ -21,8 +21,7 @@ class GraphCursor {
 
     for (const [id, node] of graph.nodes) {
       if ("name" in node.at) continue;
-      const { startIndex, endIndex } = node.at ?? {};
-      if (startIndex === undefined || endIndex === undefined) continue;
+      const { startIndex, endIndex } = node.at;
       if (offset < startIndex || offset > endIndex) continue;
 
       // path length is scope depth — longer path = deeper node
