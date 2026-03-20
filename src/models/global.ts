@@ -1,6 +1,6 @@
 import type TSParser from "tree-sitter";
 
-import type { QueryMap } from "@/query";
+import type { QueryMap } from "@/utils/query";
 
 import type { CaptureConfig } from "./capture";
 import type { ConvertConfig } from "./convert";

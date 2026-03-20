@@ -11,7 +11,8 @@ import type {
   QueryConfig,
   SingleCaptureResult,
 } from "@/models";
-import type { QueryMap } from "@/query";
+
+import type { QueryMap } from "./query";
 
 export function createChildPath(parent: NodePath, name: string): NodePath {
   const path = [...parent] as NodePath;

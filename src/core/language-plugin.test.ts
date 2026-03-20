@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { QueryMap } from "@/query";
+import { QueryMap } from "@/utils/query";
 
 import CoreError from "./error";
 import LanguagePlugin from "./language-plugin";
