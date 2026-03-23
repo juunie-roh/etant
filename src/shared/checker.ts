@@ -15,9 +15,7 @@ export function isTreeSitterLanguage(
     target !== null &&
     "nodeTypeInfo" in target &&
     target.nodeTypeInfo !== null &&
-    Array.isArray(target.nodeTypeInfo) &&
-    "name" in target &&
-    typeof target.name === "string"
+    Array.isArray(target.nodeTypeInfo)
   );
 }
 
@@ -75,7 +73,8 @@ export function assertLanguagePlugin(
   const mod = target as Record<string, unknown>;
 
   if (!isTreeSitterLanguage(mod.language))
-    fail("missing or invalid 'language'");
+    fail("missing or invalid tree-sitter language");
+
   if (!mod.query) fail("missing or invalid 'query'");
 
   if (typeof mod.captureConfig !== "object" || mod.captureConfig === null)
