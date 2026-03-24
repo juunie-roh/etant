@@ -4,9 +4,10 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { createCommand } from "@commander-js/extra-typings";
+import type { Tree } from "tree-sitter";
 
 import { loadConfig } from "@/config";
-import { Graph, Parser } from "@/core";
+import { Graph, PluginHandler } from "@/core";
 import { printDotGraph } from "@/dot";
 import { SymbexError } from "@/shared/error";
 
@@ -31,23 +32,39 @@ const program = createCommand()
   .addOption(verboseOption)
   .option("-d, --dot [name]", "print the graph in DOT format", false)
   .option("-o, --output <output>", "output file name", false)
+  .option("-r, --references", "temp", false)
   .commandsGroup(group.command.dev)
   .addCommand(queryCommand)
   .action((file, others, options) => {
     const config = loadConfig(options.config);
-    const parser = new Parser(config);
-    const { nodes, edges } = parser.parse(
+    const handler = new PluginHandler(config);
+    const { graph, tree, name } = handler.parse(
       file,
       readFileSync(file, options.encoding),
     );
 
-    const graph = new Graph(nodes, edges);
+    const map = new Map<Graph, Tree>();
+    map.set(graph, tree);
 
     let data: any = graph.serialize();
 
-    // if (options.tree) {
-    //   data = graph.tree();
-    // }
+    if (options.references) {
+      const graphCursor = graph.walk();
+      const names = handler.references(tree, graphCursor, name);
+      console.log(names);
+      for (const name of names) {
+        const resolved = graphCursor.resolve(name);
+        if (resolved) {
+          console.log(
+            resolved.path.join(" > "),
+            "at:",
+            "name" in resolved.node.at
+              ? `${resolved.node.at.name}(${resolved.node.at.external ?? false})`
+              : resolved.node.at.startIndex,
+          );
+        }
+      }
+    }
 
     if (options.dot) {
       data = printDotGraph(data, { indent: 2 });
@@ -59,7 +76,7 @@ const program = createCommand()
         JSON.stringify(data),
       );
     } else {
-      console.log(data);
+      // console.log(data);
     }
 
     if (others.length > 0) {

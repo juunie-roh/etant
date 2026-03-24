@@ -1,5 +1,7 @@
 import type { NodeId, NodePath } from "@/models";
+import { defined } from "@/shared/defined";
 
+import GraphError from "./error";
 import type Graph from "./graph";
 
 /**
@@ -35,8 +37,16 @@ class GraphCursor {
     return deepestId ? new GraphCursor(graph, deepestId) : undefined;
   }
 
-  get node(): ReturnType<Graph["nodes"]["get"]> {
-    return this._graph.nodes.get(this._id);
+  get node() {
+    const n = this._graph.nodes.get(this._id);
+    defined(
+      n,
+      new GraphError(
+        "GRAPH_NO_NODE",
+        `Failed to get node with id: ${this._id}`,
+      ),
+    );
+    return n;
   }
 
   get path(): NodePath {
@@ -45,6 +55,10 @@ class GraphCursor {
 
   get depth(): number {
     return this._graph.depth(this._id);
+  }
+
+  get name(): string {
+    return this.node.name;
   }
 
   parent(): GraphCursor | undefined {
@@ -78,16 +92,10 @@ class GraphCursor {
 
   resolve(symbol: string): GraphCursor | undefined {
     const scope = this.nearest((c) =>
-      c.children().some((child) => {
-        const path = child.path;
-        return path[path.length - 1] === symbol;
-      }),
+      c.children().some((child) => child.name === symbol),
     );
     // scope is the parent — you probably want the child
-    return scope?.children().find((child) => {
-      const path = child.path;
-      return path[path.length - 1] === symbol;
-    });
+    return scope?.children().find((child) => child.name === symbol);
   }
 }
 

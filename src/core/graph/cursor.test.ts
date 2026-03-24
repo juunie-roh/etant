@@ -18,18 +18,21 @@ const graph = new Graph(
       path: ["file.ts"] as NodePath,
       kind: "module",
       type: "scope",
+      blockStartIndex: 0,
       at: { name: "file.ts" },
     },
     {
       path: ["file.ts", "Foo", "bar"] as NodePath,
       kind: "method",
       type: "scope",
+      blockStartIndex: 26,
       at: makeRange(20, 50),
     },
     {
       path: ["file.ts", "Foo"] as NodePath,
       kind: "class",
       type: "scope",
+      blockStartIndex: 19,
       at: makeRange(10, 80),
     },
     {
@@ -92,9 +95,9 @@ describe("Graph Cursor", () => {
       expect(cursor.node?.kind).toBe("module");
     });
 
-    it("returns undefined for an unknown id", () => {
+    it("throws for an unknown id", () => {
       const unknown = new GraphCursor(graph, "ghost" as unknown as NodeId);
-      expect(unknown.node).toBeUndefined();
+      expect(() => unknown.node).toThrow();
     });
   });
 
