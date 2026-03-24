@@ -4,9 +4,7 @@ import type Parser from "tree-sitter";
  * Walk through all sibling nodes of given decorator node and return them all in sequential ordered array.
  * @param node The last decorator node captured.
  */
-export function getDecorators(
-  node: Parser.SyntaxNode,
-): Parser.SyntaxNode[] {
+export function getDecorators(node: Parser.SyntaxNode): Parser.SyntaxNode[] {
   const result: Parser.SyntaxNode[] = [];
   let n: Parser.SyntaxNode | null = node;
 
