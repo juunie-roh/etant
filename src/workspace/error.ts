@@ -1,4 +1,4 @@
-import { SymbexError, SymbexErrorCode } from "@/shared/error";
+import { SymbexError, SymbexErrorCode } from "@/common/error";
 
 type WorkspaceErrorCode = Extract<SymbexErrorCode, `WORKSPACE_${string}`>;
 

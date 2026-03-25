@@ -1,5 +1,7 @@
 import Parser from "tree-sitter";
 
+import { assertPluginDescriptor } from "@/common/checker";
+import { Log } from "@/common/decorators";
 import type {
   Edge,
   Node,
@@ -7,7 +9,6 @@ import type {
   PluginDescriptor,
   QueryConfig,
 } from "@/models";
-import { assertPluginDescriptor } from "@/shared/checker";
 import { createCapture, createConvert } from "@/utils";
 
 import CoreError from "./error";
@@ -81,15 +82,15 @@ class Plugin {
   }
 
   /**
-   * Parses a source file to the {@link Parser.Tree | tree-sitter `Tree`}.
+   * Parses a source file to the {@link Parser.Tree | tree-sitter tree}.
    * @param filePath Path to the source file to parse.
    * @param source String source to parse.
    * @param oldTree Previous tree for incremental parsing.
    * @param options Parsing options passed to tree-sitter.
    * @throws If the language plugin fails to parse the file.
    */
+  @Log({ level: "debug" })
   parse(
-    filePath: string,
     source: string,
     oldTree?: Parser.Tree | null,
     options?: Parser.Options,
@@ -99,7 +100,7 @@ class Plugin {
     } catch (e) {
       throw new CoreError(
         "CORE_PLUGIN_PARSE_FAILED",
-        `Failed to parse ${filePath}`,
+        `Failed to parse source`,
         { cause: e },
       );
     }
@@ -109,6 +110,7 @@ class Plugin {
     return this._module.references(node);
   }
 
+  @Log({ level: "debug" })
   extract(
     filePath: string,
     node: Parser.SyntaxNode,

@@ -237,7 +237,7 @@ describe("LanguagePlugin", () => {
 
   describe("parse()", () => {
     it("returns a tree for valid source", () => {
-      const tree = plugin.parse("test.ts", "const x = 1;");
+      const tree = plugin.parse("const x = 1;");
       expect(tree.rootNode.type).toBe("program");
     });
 
@@ -247,19 +247,19 @@ describe("LanguagePlugin", () => {
       });
 
       try {
-        plugin.parse("bad.ts", "");
+        plugin.parse("");
         expect.unreachable("should have thrown");
       } catch (e) {
         expect(e).toBeInstanceOf(CoreError);
         expect((e as CoreError).code).toBe("CORE_PLUGIN_PARSE_FAILED");
-        expect((e as CoreError).message).toContain("bad.ts");
+        expect((e as CoreError).message).toContain("Failed");
       }
     });
   });
 
   describe("extract()", () => {
     it("returns nodes and edges arrays for a parsed source", () => {
-      const tree = plugin.parse("greet.ts", "export function greet() {}");
+      const tree = plugin.parse("export function greet() {}");
       const result = plugin.extract("greet.ts", tree.rootNode);
 
       expect(Array.isArray(result.nodes)).toBe(true);

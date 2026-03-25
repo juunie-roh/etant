@@ -2,8 +2,9 @@ import path from "node:path";
 
 import type Parser from "tree-sitter";
 
+import { Log } from "@/common/decorators";
+import { defined } from "@/common/defined";
 import type { Config } from "@/models/config";
-import { defined } from "@/shared/defined";
 
 import CoreError from "./error";
 import Graph from "./graph";
@@ -44,9 +45,10 @@ class PluginHandler {
    * @param filePath Path to the source file to parse.
    * @param source String source to parse.
    * @param oldTree Previous tree for incremental parsing.
-   * @param options Parsing options passed to tree-sitter.
+   * @param options {@link Parser.Options | Parsing options} passed to tree-sitter.
    * @throws If the file has any syntax error.
    */
+  @Log({ level: "debug" })
   parse(
     filePath: string,
     source: string,
@@ -54,7 +56,7 @@ class PluginHandler {
     options?: Parser.Options,
   ): PluginHandler.ParseResult {
     const plugin = this._getPlugin(filePath);
-    const tree = plugin.parse(filePath, source, oldTree, options);
+    const tree = plugin.parse(source, oldTree, options);
 
     if (tree.rootNode.hasError) {
       throw new CoreError("CORE_SYNTAX_ERROR", `Syntax error in "${filePath}"`);
@@ -69,6 +71,7 @@ class PluginHandler {
     };
   }
 
+  @Log({ level: "debug" })
   references(node: Parser.SyntaxNode, pluginName: string): string[] {
     const plugin = this.plugins.get(pluginName);
     if (!this.plugins.has(pluginName))

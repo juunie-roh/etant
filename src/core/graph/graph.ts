@@ -1,5 +1,5 @@
+import { defined } from "@/common/defined";
 import type { Edge as E, Node as N, NodeId, NodePath } from "@/models";
-import { defined } from "@/shared/defined";
 
 import GraphCursor from "./cursor";
 import GraphError from "./error";

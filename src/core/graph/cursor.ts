@@ -1,7 +1,7 @@
 import type Parser from "tree-sitter";
 
+import { defined } from "@/common/defined";
 import type { NodeId, NodePath } from "@/models";
-import { defined } from "@/shared/defined";
 
 import GraphError from "./error";
 import type Graph from "./graph";

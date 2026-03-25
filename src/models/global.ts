@@ -111,3 +111,5 @@ export interface PluginDescriptor<
   convertConfig: ConvertConfig<Q, N, E>;
   references: (node: Parser.SyntaxNode) => string[];
 }
+
+export type Offset = Parser.Point | number;

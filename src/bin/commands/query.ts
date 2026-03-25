@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { createCommand } from "@commander-js/extra-typings";
 import Parser from "tree-sitter";
 
-import { assertTreeSitterLanguage } from "@/shared/checker";
+import { assertTreeSitterLanguage } from "@/common/checker";
 
 import { fileArg } from "../args";
 import BinaryError from "../error";

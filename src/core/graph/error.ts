@@ -1,4 +1,4 @@
-import { SymbexError, SymbexErrorCode } from "@/shared/error";
+import { SymbexError, SymbexErrorCode } from "@/common/error";
 
 type GraphErrorCode = Extract<SymbexErrorCode, `GRAPH_${string}`>;
 

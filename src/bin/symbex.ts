@@ -5,9 +5,9 @@ import { resolve } from "node:path";
 
 import { createCommand } from "@commander-js/extra-typings";
 
+import { SymbexError } from "@/common/error";
 import { loadConfig } from "@/config";
 import { printDotGraph } from "@/dot";
-import { SymbexError } from "@/shared/error";
 import { Workspace } from "@/workspace";
 
 import pkg from "../../package.json";

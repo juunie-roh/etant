@@ -1,7 +1,8 @@
 import Parser from "tree-sitter";
 
+import { Log } from "@/common/decorators";
 import { GraphCursor, PluginHandler } from "@/core";
-import type { Config } from "@/models";
+import type { Config, Offset } from "@/models";
 
 import WorkspaceError from "./error";
 
@@ -14,6 +15,7 @@ class Workspace {
     this._files = new Map();
   }
 
+  @Log({ level: "debug" })
   open(filePath: string, source: string): PluginHandler.ParseResult {
     const parsed = this._handler.parse(filePath, source);
     this._files.set(filePath, parsed);
@@ -25,7 +27,7 @@ class Workspace {
     if (!parsed) {
       throw new WorkspaceError(
         "WORKSPACE_FILE_NOT_PARSED",
-        `"${filePath}" has not been opened`,
+        `"${filePath}" has not been opened.`,
       );
     }
     return parsed;
@@ -35,7 +37,47 @@ class Workspace {
     return this._files.has(filePath);
   }
 
-  trace(filePath: string, target: Parser.Point | number) {
+  @Log({ level: "debug" })
+  trace(filePath: string, target: Offset) {
+    const { language, cursor, node } = this._syncOffset(filePath, target);
+
+    const references = this._handler.references(node, language);
+
+    for (const ref of references) {
+      const resolved = cursor.resolve(ref);
+      if (!resolved) {
+        console.log(`Unresolved reference: ${ref}`);
+      } else {
+        console.log(
+          resolved.path.join(" > "),
+          resolved.node.kind,
+          "at:",
+          "name" in resolved.node.at
+            ? `${resolved.node.at.name}(${resolved.node.at.external ?? false})`
+            : resolved.node.at.startPosition.row,
+        );
+      }
+    }
+  }
+
+  @Log({ level: "debug", message: "Workspace Destroyed" })
+  destroy(): void {
+    this._handler.destroy();
+    this._files.clear();
+  }
+
+  /**
+   * Synchronize a node with given offset.
+   */
+  @Log({ level: "debug" })
+  private _syncOffset(
+    filePath: string,
+    target: Offset,
+  ): {
+    language: string;
+    cursor: GraphCursor;
+    node: Parser.SyntaxNode;
+  } {
     const { graph, tree, language } = this.get(filePath);
     const cursor = GraphCursor.at(graph, target);
 
@@ -57,31 +99,11 @@ class Workspace {
     const node =
       tree.rootNode.descendantForIndex(offset).parent ?? tree.rootNode;
 
-    const references = this._handler.references(node, language);
-
-    // temporary logs of result
-    console.log(cursor.name, cursor.node.at, cursor.node.blockStartIndex);
-
-    for (const ref of references) {
-      const resolved = cursor.resolve(ref);
-      if (!resolved) {
-        console.log(`Unresolved reference: ${ref}`);
-      } else {
-        console.log(
-          resolved.path.join(" > "),
-          resolved.node.kind,
-          "at:",
-          "name" in resolved.node.at
-            ? `${resolved.node.at.name}(${resolved.node.at.external ?? false})`
-            : resolved.node.at.startPosition.row,
-        );
-      }
-    }
-  }
-
-  destroy(): void {
-    this._handler.destroy();
-    this._files.clear();
+    return {
+      language,
+      cursor,
+      node,
+    };
   }
 }
 
