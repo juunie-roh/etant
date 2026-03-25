@@ -41,12 +41,11 @@ class Logger {
     if (level < this._level) return;
     const name = Logger.Level[level] as keyof typeof Logger.Level;
     const method = name === "debug" ? "log" : name;
-    const pad = Math.max(
-      ...Object.keys(Logger.Level)
-        .filter((k) => Number.isNaN(Number(k)))
-        .map((k) => k.length),
+
+    console[method](
+      `[${name.toUpperCase()}]`.padEnd(Logger.LABEL_PAD + 2),
+      ...args,
     );
-    console[method](`[${name.toUpperCase()}]`.padEnd(pad + 2), ...args);
   }
 }
 
@@ -57,6 +56,12 @@ namespace Logger {
     warn,
     error,
   }
+
+  export const LABEL_PAD = Math.max(
+    ...Object.keys(Logger.Level)
+      .filter((k) => Number.isNaN(Number(k)))
+      .map((k) => k.length),
+  );
 }
 
 export default Logger;

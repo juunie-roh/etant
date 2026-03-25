@@ -213,8 +213,22 @@ describe("Graph Cursor", () => {
     });
   });
 
-  describe("at()", () => {
-    it("returns undefined when no node covers the offset", () => {
+  describe("name", () => {
+    it("returns the last path segment", () => {
+      expect(cursor.name).toBe("file.ts");
+    });
+
+    it("returns the leaf name for nested nodes", () => {
+      const [foo] = cursor.children();
+      expect(foo.name).toBe("Foo");
+
+      const [bar] = foo.children();
+      expect(bar.name).toBe("bar");
+    });
+  });
+
+  describe("at() — byte offset", () => {
+    it("falls back to root when no node covers the offset", () => {
       expect(GraphCursor.at(graph, 200).depth).toEqual(0);
     });
 
@@ -230,20 +244,64 @@ describe("Graph Cursor", () => {
       expect(c.path).toEqual(["file.ts", "Foo"]);
     });
 
-    it("returns undefined when offset falls outside all ranged nodes", () => {
+    it("falls back to root when offset is outside all ranged nodes", () => {
       // offset 90 is outside Foo (10-80), bar (20-50), and x (60-75); file.ts uses NodeSource and is skipped
       const c = GraphCursor.at(graph, 90);
       expect(c.depth).toEqual(0);
     });
 
     it("includes a node whose startIndex equals the offset", () => {
-      // offset 10 is the inclusive start of Foo (10-80); bar starts at 20
       expect(GraphCursor.at(graph, 10).path).toEqual(["file.ts", "Foo"]);
     });
 
     it("includes a node whose endIndex equals the offset", () => {
-      // offset 80 is the inclusive end of Foo (10-80); bar ends at 50
       expect(GraphCursor.at(graph, 80).path).toEqual(["file.ts", "Foo"]);
+    });
+  });
+
+  describe("at() — Point target", () => {
+    // makeRange maps column=start..end on row 0 for all nodes
+    it("returns the deepest node covering the point", () => {
+      const c = GraphCursor.at(graph, { row: 0, column: 30 });
+      expect(c.path).toEqual(["file.ts", "Foo", "bar"]);
+    });
+
+    it("returns a shallower node when point is outside deeper nodes", () => {
+      const c = GraphCursor.at(graph, { row: 0, column: 15 });
+      expect(c.path).toEqual(["file.ts", "Foo"]);
+    });
+
+    it("falls back to root when point is outside all ranged nodes", () => {
+      const c = GraphCursor.at(graph, { row: 0, column: 90 });
+      expect(c.depth).toEqual(0);
+    });
+
+    it("falls back to root when row is outside all ranged nodes", () => {
+      const c = GraphCursor.at(graph, { row: 5, column: 30 });
+      expect(c.depth).toEqual(0);
+    });
+
+    it("includes a node at its start position boundary", () => {
+      expect(GraphCursor.at(graph, { row: 0, column: 10 }).path).toEqual([
+        "file.ts",
+        "Foo",
+      ]);
+    });
+
+    it("includes a node at its end position boundary", () => {
+      expect(GraphCursor.at(graph, { row: 0, column: 80 }).path).toEqual([
+        "file.ts",
+        "Foo",
+      ]);
+    });
+  });
+
+  describe("_contains (via at())", () => {
+    it("skips nodes with NodeSource (name-based) at", () => {
+      // React import has at: { name: "react" } — at() should never descend into it
+      // offset 0 is within the file but React has no range, so root is returned
+      const c = GraphCursor.at(graph, 0);
+      expect(c.path).toEqual(["file.ts"]);
     });
   });
 });
