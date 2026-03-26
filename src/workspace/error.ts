@@ -1,8 +1,8 @@
-import { SymbexError, SymbexErrorCode } from "@/common/error";
+import { EtantError, EtantErrorCode } from "@/common/error";
 
-type WorkspaceErrorCode = Extract<SymbexErrorCode, `WORKSPACE_${string}`>;
+type WorkspaceErrorCode = Extract<EtantErrorCode, `WORKSPACE_${string}`>;
 
-class WorkspaceError extends SymbexError {
+class WorkspaceError extends EtantError {
   constructor(
     code: WorkspaceErrorCode,
     message: string,

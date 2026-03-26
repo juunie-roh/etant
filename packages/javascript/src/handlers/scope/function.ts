@@ -1,4 +1,4 @@
-import { createChildPath, createConvertResult, getRange } from "symbex/utils";
+import { createChildPath, createConvertResult, getRange } from "etant/utils";
 import type { SyntaxNode } from "tree-sitter";
 
 import type { ConvertHandler, Edge, Node } from "@/types";

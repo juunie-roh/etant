@@ -72,7 +72,10 @@ class GraphCursor {
     return cursors;
   }
 
-  nearest(
+  /**
+   * Find the closest ancestor of the current node that satisfies the given predicate.
+   */
+  closest(
     predicate: (cursor: GraphCursor) => boolean,
   ): GraphCursor | undefined {
     let c: GraphCursor | undefined = this;
@@ -85,8 +88,11 @@ class GraphCursor {
     return undefined;
   }
 
+  /**
+   * Find the closest node from ancestors of the current node having the given symbol as its name.
+   */
   resolve(symbol: string): GraphCursor | undefined {
-    const scope = this.nearest((c) =>
+    const scope = this.closest((c) =>
       c.children().some((child) => child.name === symbol),
     );
     // scope is the parent — you probably want the child

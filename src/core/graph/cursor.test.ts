@@ -162,26 +162,26 @@ describe("Graph Cursor", () => {
 
   describe("nearest()", () => {
     it("returns self when predicate matches self", () => {
-      const result = cursor.nearest((c) => c.node?.kind === "module");
+      const result = cursor.closest((c) => c.node?.kind === "module");
       expect(result?.path).toEqual(["file.ts"]);
     });
 
     it("walks up to a matching ancestor", () => {
       const [foo] = cursor.children();
       const [bar] = foo.children();
-      const result = bar.nearest((c) => c.node?.kind === "module");
+      const result = bar.closest((c) => c.node?.kind === "module");
       expect(result?.path).toEqual(["file.ts"]);
     });
 
     it("stops at the first matching ancestor (not the deepest)", () => {
       const [foo] = cursor.children();
       const [bar] = foo.children();
-      const result = bar.nearest((c) => c.node?.kind === "class");
+      const result = bar.closest((c) => c.node?.kind === "class");
       expect(result?.path).toEqual(["file.ts", "Foo"]);
     });
 
     it("returns undefined when no ancestor matches", () => {
-      expect(cursor.nearest(() => false)).toBeUndefined();
+      expect(cursor.closest(() => false)).toBeUndefined();
     });
   });
 

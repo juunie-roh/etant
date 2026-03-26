@@ -22,15 +22,27 @@ class PluginHandler {
   private _languagePlugins: Map<string, Plugin>;
   private _inverted: Map<Plugin, string>;
 
-  constructor(config: Config) {
-    this._languagePlugins = new Map();
-    this._inverted = new Map();
+  private constructor(
+    languagePlugins: Map<string, Plugin>,
+    inverted: Map<Plugin, string>,
+  ) {
+    this._languagePlugins = languagePlugins;
+    this._inverted = inverted;
+  }
 
-    config.language.forEach((c) => {
-      const plugin = new Plugin(c.name);
-      this._languagePlugins.set(c.ext, plugin);
-      this._inverted.set(plugin, c.ext);
-    });
+  static async create(config: Config): Promise<PluginHandler> {
+    const languagePlugins = new Map<string, Plugin>();
+    const inverted = new Map<Plugin, string>();
+
+    await Promise.all(
+      config.language.map(async (c) => {
+        const plugin = await Plugin.create(c.name);
+        languagePlugins.set(c.ext, plugin);
+        inverted.set(plugin, c.ext);
+      }),
+    );
+
+    return new PluginHandler(languagePlugins, inverted);
   }
 
   /**

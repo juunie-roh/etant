@@ -28,7 +28,7 @@ export default defineConfig([
   {
     ...options,
     dts: { entry },
-    entry: [...entry, "src/bin/symbex.ts"],
+    entry: [...entry, "src/bin/etant.ts"],
     format: "cjs",
   },
 ]);

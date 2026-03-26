@@ -1,4 +1,4 @@
-import { QueryMap } from "symbex/query";
+import { QueryMap } from "etant/query";
 import type Parser from "tree-sitter";
 import JavaScript from "tree-sitter-javascript";
 
@@ -6,7 +6,8 @@ import JavaScript from "tree-sitter-javascript";
 import ifQueryString from "@/queries/anonymous/if.scm";
 import iifeQueryString from "@/queries/anonymous/iife.scm";
 // binding
-import importQueryString from "@/queries/binding/import.scm";
+import esmQueryString from "@/queries/binding/import/esm.scm";
+import iifeImportQueryString from "@/queries/binding/import/iife.scm";
 import memberQueryString from "@/queries/binding/member.scm";
 import variableQueryString from "@/queries/binding/variable.scm";
 // bypass
@@ -26,7 +27,8 @@ export const query = new QueryMap<keyof QueryConfig>(language)
   .set("if", ifQueryString)
   .set("iife", iifeQueryString)
   // binding
-  .set("import", importQueryString)
+  .set("esm", esmQueryString)
+  .set("iife_import", iifeImportQueryString)
   .set("member", memberQueryString)
   .set("variable", variableQueryString)
   // scope

@@ -2,11 +2,15 @@
   "language": [
     {
       "ext": ".js",
-      "name": "@symbex/javascript"
+      "name": "@etant/javascript"
+    },
+    {
+      "ext": ".mjs",
+      "name": "@etant/javascript"
     },
     {
       "ext": ".jsx",
-      "name": "@symbex/javascript"
+      "name": "@etant/javascript"
     }
   ]
 }

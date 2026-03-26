@@ -1,4 +1,5 @@
 ;; IIFE Immediately Invoked Function Expression
+;; unassigned iife
 
 (expression_statement
   (call_expression
@@ -16,9 +17,9 @@
     (call_expression
       function: (member_expression
                   object: [
-                    ;; (function () @body.call(this))
+                    ;; (function () @body).call(this)
                     (function_expression body: (statement_block) @body)
-                    ;; (() => @body.call(this))
+                    ;; (() => @body).call(this)
                     (arrow_function body: (statement_block) @body)
                   ]
                   property: (property_identifier) @call)

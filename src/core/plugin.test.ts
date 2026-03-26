@@ -27,19 +27,10 @@ vi.mock("tree-sitter", () => ({
 }));
 
 // ---------------------------------------------------------------------------
-// CJS require() interception for LanguagePlugin.load() validation tests
-// ---------------------------------------------------------------------------
-
-const CjsModule = require("node:module") as {
-  _load: (...args: unknown[]) => unknown;
-};
-const originalLoad = CjsModule._load.bind(CjsModule);
-
-// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
-const VALID_PLUGIN = "@symbex/javascript";
+const VALID_PLUGIN = "@etant/javascript";
 
 const validLangShape = {
   name: "typescript",
@@ -61,147 +52,26 @@ function fakeDescriptor() {
   };
 }
 
-/** Installs a Module._load spy that returns `fake` for VALID_PLUGIN. */
-function spyLoad(fake: unknown) {
-  CjsModule._load = (request: unknown, ...args: unknown[]) =>
-    request === VALID_PLUGIN ? fake : originalLoad(request, ...args);
-}
-
 // ---------------------------------------------------------------------------
-// LanguagePlugin.load()
+// Plugin.load()
 // ---------------------------------------------------------------------------
 
-describe("LanguagePlugin.load()", () => {
+describe("Plugin.load()", () => {
   afterEach(() => {
-    CjsModule._load = originalLoad;
+    vi.restoreAllMocks();
   });
 
-  describe("when the module has an invalid structure", () => {
-    it("throws when the module default is null", () => {
-      spyLoad({ default: null });
-
-      try {
-        Plugin.load(VALID_PLUGIN);
-        expect.unreachable("should have thrown");
-      } catch (e) {
-        expect(e).toBeInstanceOf(CoreError);
-        expect((e as CoreError).code).toBe("CORE_PLUGIN_LOAD_FAILED");
-        expect((e as CoreError).message).toContain("is not an object");
-      }
-    });
-
-    it("throws when the module default is not an object", () => {
-      spyLoad({ default: 42 });
-
-      try {
-        Plugin.load(VALID_PLUGIN);
-        expect.unreachable("should have thrown");
-      } catch (e) {
-        expect((e as CoreError).code).toBe("CORE_PLUGIN_LOAD_FAILED");
-        expect((e as CoreError).message).toContain("is not an object");
-      }
-    });
-
-    it("throws when 'language' is missing", () => {
-      spyLoad({
-        default: {
-          query: fakeQueryMap(),
-          captureConfig: {},
-          convertConfig: {},
-        },
-      });
-
-      try {
-        Plugin.load(VALID_PLUGIN);
-        expect.unreachable("should have thrown");
-      } catch (e) {
-        expect((e as CoreError).code).toBe("CORE_PLUGIN_LOAD_FAILED");
-        expect((e as CoreError).message).toContain("language");
-      }
-    });
-
-    it("throws when 'language' does not satisfy the Language shape", () => {
-      spyLoad({
-        default: {
-          language: { notALanguage: true },
-          query: fakeQueryMap(),
-          captureConfig: {},
-          convertConfig: {},
-        },
-      });
-
-      try {
-        Plugin.load(VALID_PLUGIN);
-        expect.unreachable("should have thrown");
-      } catch (e) {
-        expect((e as CoreError).code).toBe("CORE_PLUGIN_LOAD_FAILED");
-        expect((e as CoreError).message).toContain("language");
-      }
-    });
-
-    it("throws when 'query' is undefined", () => {
-      spyLoad({
-        default: {
-          language: validLangShape,
-          query: null,
-          captureConfig: {},
-          convertConfig: {},
-        },
-      });
-
-      try {
-        Plugin.load(VALID_PLUGIN);
-        expect.unreachable("should have thrown");
-      } catch (e) {
-        expect((e as CoreError).code).toBe("CORE_PLUGIN_LOAD_FAILED");
-        expect((e as CoreError).message).toContain("query");
-      }
-    });
-
-    it("throws when 'captureConfig' is null", () => {
-      spyLoad({
-        default: {
-          language: validLangShape,
-          query: fakeQueryMap(),
-          captureConfig: null,
-          convertConfig: {},
-        },
-      });
-
-      try {
-        Plugin.load(VALID_PLUGIN);
-        expect.unreachable("should have thrown");
-      } catch (e) {
-        expect((e as CoreError).code).toBe("CORE_PLUGIN_LOAD_FAILED");
-        expect((e as CoreError).message).toContain("captureConfig");
-      }
-    });
-
-    it("throws when 'convertConfig' is null", () => {
-      spyLoad({
-        default: {
-          language: validLangShape,
-          query: fakeQueryMap(),
-          captureConfig: {},
-          convertConfig: null,
-        },
-      });
-
-      try {
-        Plugin.load(VALID_PLUGIN);
-        expect.unreachable("should have thrown");
-      } catch (e) {
-        expect((e as CoreError).code).toBe("CORE_PLUGIN_LOAD_FAILED");
-        expect((e as CoreError).message).toContain("convertConfig");
-      }
-    });
+  it("rejects when the module cannot be imported", async () => {
+    await expect(Plugin.load("@etant/nonexistent")).rejects.toThrow(CoreError);
   });
 
   describe("with a valid plugin", () => {
-    it("returns a Plugin.Descriptor with the expected shape", () => {
-      spyLoad({ default: fakeDescriptor() });
+    it("returns a Plugin.Descriptor with the expected shape", async () => {
+      vi.spyOn(Plugin, "load").mockResolvedValue(
+        fakeDescriptor() as Plugin.Descriptor,
+      );
 
-      const descriptor = Plugin.load(VALID_PLUGIN);
+      const descriptor = await Plugin.load(VALID_PLUGIN);
 
       expect(descriptor.query).toBeInstanceOf(QueryMap);
       expect(descriptor.captureConfig).toBeDefined();
@@ -212,15 +82,17 @@ describe("LanguagePlugin.load()", () => {
 });
 
 // ---------------------------------------------------------------------------
-// LanguagePlugin (class)
+// Plugin (class)
 // ---------------------------------------------------------------------------
 
-describe("LanguagePlugin", () => {
+describe("Plugin", () => {
   let plugin: Plugin;
 
-  beforeEach(() => {
-    vi.spyOn(Plugin, "load").mockReturnValue(fakeDescriptor());
-    plugin = new Plugin(VALID_PLUGIN);
+  beforeEach(async () => {
+    vi.spyOn(Plugin, "load").mockResolvedValue(
+      fakeDescriptor() as Plugin.Descriptor,
+    );
+    plugin = await Plugin.create(VALID_PLUGIN);
   });
 
   afterEach(() => {

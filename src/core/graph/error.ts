@@ -1,8 +1,8 @@
-import { SymbexError, SymbexErrorCode } from "@/common/error";
+import { EtantError, EtantErrorCode } from "@/common/error";
 
-type GraphErrorCode = Extract<SymbexErrorCode, `GRAPH_${string}`>;
+type GraphErrorCode = Extract<EtantErrorCode, `GRAPH_${string}`>;
 
-class GraphError extends SymbexError {
+class GraphError extends EtantError {
   constructor(code: GraphErrorCode, message: string, options?: ErrorOptions) {
     super(code, message, options);
   }

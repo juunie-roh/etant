@@ -4,7 +4,7 @@ import fs from "fs";
 import { normalize } from "./normalize";
 
 const scmPlugin: Plugin = {
-  name: "symbex-scm",
+  name: "etant-scm",
   setup(build) {
     build.onLoad({ filter: /\.scm$/ }, (args) => {
       const raw = fs.readFileSync(args.path, "utf8");

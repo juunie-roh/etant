@@ -1,7 +1,7 @@
 {
-  "name": "@symbex/javascript",
-  "version": "0.0.2",
-  "description": "JavaScript plugin for symbex",
+  "name": "@etant/javascript",
+  "version": "0.0.0",
+  "description": "JavaScript plugin for etant",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -20,7 +20,7 @@
     "build": "tsup",
     "check-types": "tsc -p ./tsconfig.json --noEmit",
     "dev": "tsup --watch",
-    "dev:query": "pnpm symbex query --grammar tree-sitter-javascript"
+    "dev:query": "pnpm etant query --grammar tree-sitter-javascript"
   },
   "keywords": [],
   "author": "Juun",
@@ -32,11 +32,11 @@
     "node": "^22.13.0 || >=24"
   },
   "peerDependencies": {
-    "symbex": "^0.0.2",
+    "etant": "^0.0.0",
     "tree-sitter-javascript": "^0.25.0"
   },
   "devDependencies": {
-    "symbex": "workspace:*",
+    "etant": "workspace:*",
     "tree-sitter-javascript": "^0.25.0",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3"

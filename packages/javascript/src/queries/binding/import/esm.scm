@@ -1,4 +1,4 @@
-;; imports
+;; ESM
 ;; import "@source";
 (import_statement
   (import_clause
@@ -14,4 +14,4 @@
           alias: (identifier)? @alias))
     ])?
   source: (string (string_fragment) @source)
-) @node
+)

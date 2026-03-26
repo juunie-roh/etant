@@ -1,3 +1,3 @@
-# @juun-roh/symbex-javascript
+# @etant/javascript
 
-JavaScript grammar provider plugin for symbex core library.
+JavaScript grammar provider plugin for etant core library.

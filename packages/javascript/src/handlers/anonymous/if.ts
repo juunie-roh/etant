@@ -1,4 +1,4 @@
-import { createChildPath, createConvertResult, getRange } from "symbex/utils";
+import { createChildPath, createConvertResult, getRange } from "etant/utils";
 
 import type { ConvertHandler, Edge, Node } from "@/types";
 

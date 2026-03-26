@@ -30,7 +30,7 @@ declare namespace Plugin {
 }
 
 /**
- * Represents a loaded and initialized symbex language plugin.
+ * Represents a loaded and initialized etant language plugin.
  */
 class Plugin {
   private _parser: Parser;
@@ -41,8 +41,8 @@ class Plugin {
 
   private _convert: ReturnType<typeof createConvert<QueryConfig, Node, Edge>>;
 
-  constructor(name: string) {
-    this._module = Plugin.load(name);
+  private constructor(plugin: Plugin.Descriptor) {
+    this._module = plugin;
 
     this._capture = createCapture<QueryConfig>(
       this._module.query,
@@ -58,11 +58,16 @@ class Plugin {
     this._parser.setLanguage(this._module.language);
   }
 
-  static load(name: string): Plugin.Descriptor {
-    let m: Plugin.Descriptor;
+  static async create(name: string): Promise<Plugin> {
+    const descriptor = await Plugin.load(name);
+    return new Plugin(descriptor);
+  }
+
+  static async load(name: string): Promise<Plugin.Descriptor> {
+    let m: Record<string, unknown>;
 
     try {
-      require.resolve(name);
+      m = await import(name);
     } catch (e) {
       throw new CoreError(
         "CORE_PLUGIN_LOAD_FAILED",
@@ -71,23 +76,15 @@ class Plugin {
       );
     }
 
-    try {
-      m = require(name).default;
-    } catch (e) {
-      throw new CoreError(
-        "CORE_PLUGIN_LOAD_FAILED",
-        `Plugin "${name}" threw during initialization`,
-        { cause: e },
-      );
-    }
+    const descriptor = (m.default ?? m) as Plugin.Descriptor;
 
     assertPluginDescriptor(
-      m,
+      descriptor,
       name,
       new CoreError("CORE_PLUGIN_LOAD_FAILED", "Failed to load plugin"),
     );
 
-    return m;
+    return descriptor;
   }
 
   /**

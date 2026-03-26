@@ -1,7 +1,7 @@
 import bypassExport from "./handlers/bypass/export";
 import type { CaptureConfig } from "./types";
 
-export const captureConfig = {
+export const captureConfig: CaptureConfig = {
   class: {
     bypass: bypassExport("class"),
   },
@@ -11,4 +11,4 @@ export const captureConfig = {
   variable: {
     bypass: bypassExport("variable"),
   },
-} as const satisfies CaptureConfig;
+} as const;

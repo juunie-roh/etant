@@ -1,8 +1,8 @@
-import { SymbexError, SymbexErrorCode } from "@/common/error";
+import { EtantError, EtantErrorCode } from "@/common/error";
 
-type QueryErrorCode = Extract<SymbexErrorCode, `QUERY_${string}`>;
+type QueryErrorCode = Extract<EtantErrorCode, `QUERY_${string}`>;
 
-class QueryError extends SymbexError {
+class QueryError extends EtantError {
   constructor(code: QueryErrorCode, message: string, options?: ErrorOptions) {
     super(code, message, options);
   }

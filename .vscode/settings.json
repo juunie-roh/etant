@@ -8,10 +8,10 @@
   "cSpell.words": [
     "commitlint",
     "CXXFLAGS",
+    "etant",
     "Graphviz",
     "nodenext",
-    "rankdir",
-    "symbex"
+    "rankdir"
   ],
   "editor.formatOnSave": false,
   "eslint.enable": true,

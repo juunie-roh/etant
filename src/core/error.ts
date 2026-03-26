@@ -1,8 +1,8 @@
-import { SymbexError, SymbexErrorCode } from "@/common/error";
+import { EtantError, EtantErrorCode } from "@/common/error";
 
-type CoreErrorCode = Extract<SymbexErrorCode, `CORE_${string}`>;
+type CoreErrorCode = Extract<EtantErrorCode, `CORE_${string}`>;
 
-class CoreError extends SymbexError {
+class CoreError extends EtantError {
   constructor(code: CoreErrorCode, message: string, options?: ErrorOptions) {
     super(code, message, options);
   }

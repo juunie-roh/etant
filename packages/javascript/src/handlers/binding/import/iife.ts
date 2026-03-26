@@ -2,42 +2,41 @@ import { createChildPath, createConvertResult, getRange } from "etant/utils";
 
 import type { ConvertHandler, Edge, Node } from "@/types";
 
-import flatPattern from "../utility/pattern";
+import flatPattern from "../../utility/pattern";
 
-const variableHandler: ConvertHandler<"variable"> = (captures, parent) => {
+const iifeImportHandler: ConvertHandler<"iife_import"> = (captures, parent) => {
   const result = createConvertResult<Node, Edge>();
-
   for (const c of captures) {
-    const { node, kind, name } = c;
+    const { kind, name, body } = c;
 
     if (name.type === "identifier") {
       const path = createChildPath(parent, name.text);
       result.edges.push({
         from: parent,
         to: path,
-        kind: "defines",
+        kind: "imports",
       });
       result.nodes.push({
         path,
         type: "binding",
-        kind: "variable",
-        at: getRange(node),
+        kind: "iife_import",
+        at: getRange(body),
         props: { kind: kind.text },
       });
     } else {
-      for (const { name: nm, node: n, has_default } of flatPattern(name)) {
+      for (const { name: nm } of flatPattern(name)) {
         const path = createChildPath(parent, nm);
         result.edges.push({
           from: parent,
           to: path,
-          kind: "defines",
+          kind: "imports",
         });
         result.nodes.push({
           path,
           type: "binding",
-          kind: "variable",
-          at: getRange(n),
-          props: { kind: kind.text, has_default },
+          kind: "iife_import",
+          at: getRange(body),
+          props: { kind: kind.text },
         });
       }
     }
@@ -46,4 +45,4 @@ const variableHandler: ConvertHandler<"variable"> = (captures, parent) => {
   return result;
 };
 
-export default variableHandler;
+export default iifeImportHandler;

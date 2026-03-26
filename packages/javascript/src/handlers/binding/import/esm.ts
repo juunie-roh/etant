@@ -1,4 +1,4 @@
-import { createChildPath, createConvertResult } from "symbex/utils";
+import { createChildPath, createConvertResult } from "etant/utils";
 
 import type { ConvertHandler, Edge, Node } from "@/types";
 
@@ -10,7 +10,7 @@ function isExternal(specifier: string): boolean {
   );
 }
 
-const importHandler: ConvertHandler<"import"> = (captures, parent) => {
+const esmHandler: ConvertHandler<"esm"> = (captures, parent) => {
   const result = createConvertResult<Node, Edge>();
 
   for (const c of captures) {
@@ -24,7 +24,7 @@ const importHandler: ConvertHandler<"import"> = (captures, parent) => {
       result.nodes.push({
         path,
         type: "binding",
-        kind: "variable",
+        kind: "esm",
         at: { name: source.text, external: isExternal(source.text) },
         props: alias ? { alias_of: name!.text } : undefined,
       });
@@ -34,4 +34,4 @@ const importHandler: ConvertHandler<"import"> = (captures, parent) => {
   return result;
 };
 
-export default importHandler;
+export default esmHandler;

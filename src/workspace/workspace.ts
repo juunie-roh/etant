@@ -10,9 +10,14 @@ class Workspace {
   private _handler: PluginHandler;
   private _files: Map<string, PluginHandler.ParseResult>;
 
-  constructor(config: Config) {
-    this._handler = new PluginHandler(config);
+  private constructor(handler: PluginHandler) {
+    this._handler = handler;
     this._files = new Map();
+  }
+
+  static async create(config: Config): Promise<Workspace> {
+    const handler = await PluginHandler.create(config);
+    return new Workspace(handler);
   }
 
   @Log({ level: "debug", label: "Workspace.open" })

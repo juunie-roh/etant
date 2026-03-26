@@ -1,4 +1,4 @@
-import type { CaptureConfigOptions } from "symbex";
+import type { CaptureConfigOptions } from "etant";
 import type Parser from "tree-sitter";
 
 import { bypass, query } from "@/query";

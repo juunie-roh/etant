@@ -1,4 +1,4 @@
-# symbex: Structural Code Comprehension
+# etant: Structural Code Comprehension
 
 ## Origin
 
@@ -32,35 +32,35 @@ Current AI code assistants retrieve code through text-based search — semantic 
 - The AI re-parses text into structural understanding on every retrieval
 - Results include noise: code that *mentions* a concept vs. code that *performs* it
 
-## What symbex Is
+## What etant Is
 
-symbex is a structural code comprehension tool. It answers one question on demand: **where did this come from?**
+etant is a structural code comprehension tool. It answers one question on demand: **where did this come from?**
 
-Given a position in source code, symbex traces the provenance of every symbol the scope depends on — what each name resolves to and where each definition originates. The result is a precise dependency set for that scope: exactly the declarations needed to understand the implementation, nothing more.
+Given a position in source code, etant traces the provenance of every symbol the scope depends on — what each name resolves to and where each definition originates. The result is a precise dependency set for that scope: exactly the declarations needed to understand the implementation, nothing more.
 
 The scope graph is the mechanism, not the product. The product is a set of resolved cursors pointing to the definitions a scope depends on, each carrying a position pointer to load source on demand. The consumer — AI agent, IDE, human — gets precisely the code needed to reason about one piece of implementation.
 
 ```text
 Current:   AI → text search → fuzzy text matches → AI re-parses into understanding
-symbex:    AI → scope graph → provenance trace → precise dependency set
+etant:    AI → scope graph → provenance trace → precise dependency set
 ```
 
 ### A Different Question
 
-Every other tool in this space asks "where is this symbol and who uses it?" — a cartographic question that requires mapping everything. symbex asks "where did this come from?" — a genealogical question that requires only following the lineage of what you're looking at.
+Every other tool in this space asks "where is this symbol and who uses it?" — a cartographic question that requires mapping everything. etant asks "where did this come from?" — a genealogical question that requires only following the lineage of what you're looking at.
 
 This follows the natural direction of code comprehension. When you read code, you encounter a symbol and look up where it came from. You never pause mid-reading to ask "who else uses this across the codebase." That's a different task (impact analysis), not comprehension.
 
-Other tools optimized for bidirectional resolution — "find definition" and "find all references." Both directions require indexing every reference occurrence. symbex only traces forward: from usage to origin. This requires only declaration indexing, not reference indexing. The graph is smaller, resolution is cheaper, and results are precise to the scope you're in.
+Other tools optimized for bidirectional resolution — "find definition" and "find all references." Both directions require indexing every reference occurrence. etant only traces forward: from usage to origin. This requires only declaration indexing, not reference indexing. The graph is smaller, resolution is cheaper, and results are precise to the scope you're in.
 
 ### Composable with Search Tools
 
-symbex doesn't need its own "find" capability. It sits downstream of search tools:
+etant doesn't need its own "find" capability. It sits downstream of search tools:
 
 - **ast-grep** finds *where* something is (structural pattern match)
-- **symbex** explains *what it depends on* (provenance trace)
+- **etant** explains *what it depends on* (provenance trace)
 
-The integration surface is a file path and a byte offset. ast-grep gives a location. symbex takes that location and traces its dependency chain.
+The integration surface is a file path and a byte offset. ast-grep gives a location. etant takes that location and traces its dependency chain.
 
 ## The Comprehension Loop
 
@@ -267,7 +267,7 @@ packages/<lang>/
 
 ### Declaration-Only Graph
 
-symbex does not index references. Only declarations (bindings) are stored. References are extracted on demand from the tree via `getReferences()` and resolved through the scope chain. This is not a missing feature — it's the core design. Forward provenance tracing doesn't need reference indexing.
+etant does not index references. Only declarations (bindings) are stored. References are extracted on demand from the tree via `getReferences()` and resolved through the scope chain. This is not a missing feature — it's the core design. Forward provenance tracing doesn't need reference indexing.
 
 ### Graph Is the Medium, Not the Output
 
@@ -296,13 +296,13 @@ The cursor is a traversal primitive. The comprehension loop uses cursors interna
 - **LSP** — Compiler-powered symbol resolution. Accurate, heavy, requires build configuration and language-specific servers.
 - **AI coding tools** — Most use text search, embeddings, or file dumps. No persistent structural graph. Emerging consensus that hybrid indexing (AST/code graph + vector search) is needed, but the structural half doesn't exist as a pluggable component.
 
-### How symbex differs
+### How etant differs
 
-These tools answer "where is this symbol and who uses it?" — bidirectional, exhaustive, pre-indexed. symbex answers "where did this come from?" — forward-only, on-demand, scoped to what you're looking at.
+These tools answer "where is this symbol and who uses it?" — bidirectional, exhaustive, pre-indexed. etant answers "where did this come from?" — forward-only, on-demand, scoped to what you're looking at.
 
-Stack graphs index every reference and definition, then find paths between them. symbex indexes only declarations, extracts references on demand from source, and resolves them through scope walk. The graph is smaller, the resolution is cheaper, and the output is precise to one scope.
+Stack graphs index every reference and definition, then find paths between them. etant indexes only declarations, extracts references on demand from source, and resolves them through scope walk. The graph is smaller, the resolution is cheaper, and the output is precise to one scope.
 
-ast-grep finds where things are. symbex explains what they depend on. They compose: ast-grep gives a location, symbex traces its provenance.
+ast-grep finds where things are. etant explains what they depend on. They compose: ast-grep gives a location, etant traces its provenance.
 
 No existing tool is optimized for forward provenance tracing as its primary operation.
 
@@ -376,7 +376,7 @@ Real-world JavaScript files (lodash.js for IIFE/CommonJS, three.module.js for ES
 
 ### Architectural
 
-- **No "find all references"**: symbex traces forward (usage → origin), not backward (definition → all usages). This is by design — but means impact analysis requires scanning.
+- **No "find all references"**: etant traces forward (usage → origin), not backward (definition → all usages). This is by design — but means impact analysis requires scanning.
 - **Single-namespace path identity**: Two declarations with the same name in the same scope collide. Accepted unless real-world frequency justifies encoding namespace into paths.
 
 ## Future Considerations

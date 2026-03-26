@@ -1,4 +1,4 @@
-export type SymbexErrorCode =
+export type EtantErrorCode =
   // binary
   | "BIN_MODULE_NOT_FOUND"
   | "BIN_INVALID_OPTION"
@@ -26,10 +26,10 @@ export type SymbexErrorCode =
   // workspace
   | "WORKSPACE_FILE_NOT_PARSED";
 
-export class SymbexError extends Error {
-  readonly code: SymbexErrorCode;
+export class EtantError extends Error {
+  readonly code: EtantErrorCode;
 
-  constructor(code: SymbexErrorCode, message: string, options?: ErrorOptions) {
+  constructor(code: EtantErrorCode, message: string, options?: ErrorOptions) {
     super(message, options);
     this.name = this.constructor.name;
     this.code = code;

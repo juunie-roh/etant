@@ -5,7 +5,7 @@ import { resolve } from "node:path";
 
 import { createCommand } from "@commander-js/extra-typings";
 
-import { SymbexError } from "@/common/error";
+import { EtantError } from "@/common/error";
 import { loadConfig } from "@/config";
 import { printDotGraph } from "@/dot";
 import { Workspace } from "@/workspace";
@@ -34,8 +34,8 @@ const program = createCommand()
   .option("--trace", "temp", false)
   .commandsGroup(group.command.dev)
   .addCommand(queryCommand)
-  .action((file, others, options) => {
-    const workspace = new Workspace(loadConfig(options.config));
+  .action(async (file, others, options) => {
+    const workspace = await Workspace.create(loadConfig(options.config));
     const { graph } = workspace.open(
       file,
       readFileSync(file, options.encoding),
@@ -74,7 +74,7 @@ try {
   program.parse();
 } catch (e) {
   const verbose = program.opts().verbose;
-  if (e instanceof SymbexError) {
+  if (e instanceof EtantError) {
     process.stderr.write(`${badge(e.code, "41")} ${e.message}\n`);
     if (verbose) console.error(e);
   } else {
