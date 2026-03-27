@@ -1,4 +1,6 @@
-# letant
+# L'étant
+
+L'étant is a short for _les étant_, meaning "The Beings" in French.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?logo=opensourceinitiative&logoColor=fff)](https://opensource.org/licenses/MIT)
 
@@ -13,7 +15,7 @@ letant:    AI → scope graph → provenance trace → precise dependency set
 
 ## Purpose
 
-Current code retrieval operates on text. Searches match on lexical proximity; results include code that *mentions* a concept rather than code that *performs* it; structural relationships like inheritance and containment are invisible.
+Current code retrieval operates on text. Searches match on lexical proximity; results include code that _mentions_ a concept rather than code that _performs_ it; structural relationships like inheritance and containment are invisible.
 
 letant approaches this differently: parse once, index structurally, query structurally. The index stores every scope and every name introduced within it. A scope is a region where names are valid — a file, a function body, a class body. A binding is a name introduced into a scope — a declaration, a parameter, an import. Some constructs are both: a function is introduced into its parent scope and creates a new scope for its own locals.
 
@@ -29,8 +31,8 @@ This follows the natural direction of code comprehension. When you read code, yo
 
 letant doesn't need its own "find" capability. It sits downstream of search tools:
 
-- **ast-grep** finds *where* something is (structural pattern match)
-- **letant** explains *what it depends on* (provenance trace)
+- **ast-grep** finds _where_ something is (structural pattern match)
+- **letant** explains _what it depends on_ (provenance trace)
 
 The integration surface is a file path and a byte offset. ast-grep gives a location. letant takes that location and traces its dependency chain.
 
@@ -71,7 +73,7 @@ letant separates concerns across three layers:
 
 **Core** — owns the schema, the graph, and the cursor API. Receives `Node[]` and `Edge[]` from plugins without knowing anything about the source language. Builds the graph and exposes it for traversal and resolution.
 
-**Abstraction plugin** *(planned)* — a lens over the raw graph. Decides what story to tell from the plugin output: what constructs are promoted to first-class nodes, what gets flattened, what gets excluded. Multiple abstraction plugins can produce different views over the same underlying data.
+**Abstraction plugin** _(planned)_ — a lens over the raw graph. Decides what story to tell from the plugin output: what constructs are promoted to first-class nodes, what gets flattened, what gets excluded. Multiple abstraction plugins can produce different views over the same underlying data.
 
 ### The Comprehension Loop
 
@@ -189,7 +191,7 @@ Options:
 
 ## Roadmap
 
-### Phase 1: Single-File Comprehension *(in progress)*
+### Phase 1: Single-File Comprehension _(in progress)_
 
 Build the scope graph and comprehension loop for a single file. JavaScript is the primary language target.
 
