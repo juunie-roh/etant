@@ -1,7 +1,7 @@
 import type Parser from "tree-sitter";
 
 import { defined } from "@/common/defined";
-import type { NodeId, NodePath } from "@/models";
+import type { NodeId, NodePath, Offset } from "@/models";
 
 import GraphError from "./error";
 import type Graph from "./graph";
@@ -19,13 +19,12 @@ class GraphCursor {
   }
 
   /**
-   * Get graph cursor instance at given {@link Parser.Point | point} or byte offset.
+   * Get graph cursor instance at given {@link Offset}.
    */
-  static at(graph: Graph, target: Parser.Point | number): GraphCursor {
+  static at(graph: Graph, offset: Offset): GraphCursor {
     let cursor = graph.walk();
     let next: GraphCursor | undefined;
-
-    while ((next = cursor.children().find(GraphCursor._contains(target)))) {
+    while ((next = cursor.children().find(GraphCursor._contains(offset)))) {
       cursor = next;
     }
 
@@ -108,12 +107,16 @@ class GraphCursor {
       }
 
       const { startPosition, endPosition } = child.node.at;
-      return (
-        startPosition.row <= target.row &&
-        startPosition.column <= target.column &&
-        endPosition.row >= target.row &&
-        endPosition.column >= target.column
-      );
+      const startsBeforeOrAt =
+        startPosition.row < target.row ||
+        (startPosition.row === target.row &&
+          startPosition.column <= target.column);
+
+      const endsAfterOrAt =
+        endPosition.row > target.row ||
+        (endPosition.row === target.row && endPosition.column >= target.column);
+
+      return startsBeforeOrAt && endsAfterOrAt;
     };
   }
 }

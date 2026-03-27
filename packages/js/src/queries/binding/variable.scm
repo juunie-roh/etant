@@ -5,7 +5,7 @@
   [("const") ("let")] @kind
   (variable_declarator
     name: (_) @name
-    value: (_) @v (#not-match? @v "^[(]?[ \t\n]*(function|class|require|import|await import|[(][^)]*[)][ \t\n]*=>)"))
+    value: (_)? @v (#not-match? @v "^[(]?[ \t\n]*(function|class|require|import|await import|[(][^)]*[)][ \t\n]*=>)"))
 ) @node
 
 ;; @kind = "var"
@@ -13,7 +13,7 @@
   ("var") @kind
   (variable_declarator
     name: (_) @name
-    value: (_) @v (#not-match? @v "^[(]?[ \t\n]*(function|class|require|import|await import|[(][^)]*[)][ \t\n]*=>)"))
+    value: (_)? @v (#not-match? @v "^[(]?[ \t\n]*(function|class|require|import|await import|[(][^)]*[)][ \t\n]*=>)"))
 ) @node
 
 ;; Rust regex
