@@ -12,7 +12,7 @@ import GraphError from "./error";
 import HashRegistry from "./hash-registry";
 
 declare namespace Graph {
-  export type Node = UnionOmit<N, "path"> & {
+  type GraphNode = UnionOmit<N, "path"> & {
     id: NodeId;
     /**
      * Last element of path segments representing the node.
@@ -20,10 +20,12 @@ declare namespace Graph {
     name: string;
   };
 
-  export type Edge = Pick<E, "kind"> & {
+  type GraphEdge = Pick<E, "kind"> & {
     from: NodeId;
     to: NodeId;
   };
+
+  export { GraphEdge as Edge, GraphNode as Node };
 }
 
 class Graph {
