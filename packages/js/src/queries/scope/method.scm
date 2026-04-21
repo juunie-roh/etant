@@ -7,7 +7,6 @@
   name: (_) @name
   parameters: (formal_parameters) @params
   body: (statement_block) @body
-  (#not-match? @name "^(constructor)$")
 ) @node
 
 ;; arrow function / function expression methods
