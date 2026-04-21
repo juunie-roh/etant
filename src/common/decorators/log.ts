@@ -1,21 +1,10 @@
 import Logger from "../logger";
-import type {
-  AbstractConstructor,
-  ClassAccessorDecorator,
-  ClassDecorator,
-  ClassFieldDecorator,
-  ClassMethod,
-  ClassMethodDecorator,
-  Decorator,
-} from "./shared";
 
 namespace Log {
   export interface Options {
     /** Which level to emit log. */
     level?: keyof typeof Logger.Level;
-    /** A representative of target. */
     label?: string;
-    /** Customized message to be shown in log. */
     message?: string;
   }
 }
@@ -24,45 +13,48 @@ namespace Log {
  * Factory form: returns a configured decorator.
  * @param options See {@link Log.Options | `Log.Options`}.
  */
-function Log(options: Log.Options): any;
+function Log(
+  options: Log.Options,
+): (target: unknown, context: DecoratorContext) => any;
 
 /** Logs class instantiation via `addInitializer`. `@Log class Foo {}`. */
-function Log<Class extends AbstractConstructor>(
+function Log<Class extends abstract new (...args: any[]) => any>(
   target: Class,
   context: ClassDecoratorContext<Class>,
-): ClassDecorator;
+): Class | void;
 
 /** Wraps a method to log invocation and elapsed time. */
 function Log<This, Args extends unknown[], Return>(
-  target: ClassMethod<This, Args, Return>,
-  context: ClassMethodDecoratorContext<This, ClassMethod<This, Args, Return>>,
-): ClassMethodDecorator;
+  target: (this: This, ...args: Args) => Return,
+  context: ClassMethodDecoratorContext<This>,
+): (this: This, ...args: Args) => Return;
 
 /** Logs the initial value assigned to a class field. */
 function Log<This, Value>(
   target: undefined,
   context: ClassFieldDecoratorContext<This, Value>,
-): ClassFieldDecorator;
+): ((this: This, initialValue: Value) => Value) | void;
 
 /** Wraps an auto-accessor to log getter and setter access. */
 function Log<This, Value>(
   target: ClassAccessorDecoratorTarget<This, Value>,
   context: ClassAccessorDecoratorContext<This, Value>,
-): ClassAccessorDecorator;
+): ClassAccessorDecoratorResult<This, Value> | void;
 
-function Log(targetOrOptions: any, context?: DecoratorContext): any {
+function Log(targetOrOptions: unknown, context?: DecoratorContext): unknown {
   if (context === undefined) {
     const options = targetOrOptions as Log.Options;
-    return (target: any, ctx: DecoratorContext) => apply(target, ctx, options);
+    return (target: unknown, ctx: DecoratorContext) =>
+      apply(target, ctx, options);
   }
   return apply(targetOrOptions, context);
 }
 
 function apply(
-  _target: any,
+  target: unknown,
   context: DecoratorContext,
   options?: Log.Options,
-): Decorator | void {
+): unknown {
   const logger = Logger.get();
   const level = options?.level ?? "info";
   const name = String(context.name ?? "anonymous");
@@ -82,63 +74,61 @@ function apply(
       return;
 
     case "method":
-      return function (target) {
-        return function (this, ...args) {
-          const name = options?.label ?? qualify(this);
-          logger[level](`${name} called`);
-          // check performance only at the "debug" level.
-          const s = level === "debug" ? performance.now() : undefined;
-          try {
-            const result = target.apply(this, args);
-            if (result instanceof Promise) {
-              return result
-                .then((value) => {
-                  if (message) logger[level](message);
-                  logger[level](`${name} ended ${elapsed(s)}`);
-                  return value;
-                })
-                .catch((err) => {
-                  logger.error(`${name} threw`, err);
-                  throw err;
-                }) as typeof result;
-            }
-            if (message) logger[level](message);
-            logger[level](`${name} ended ${elapsed(s)}`);
-            return result;
-          } catch (err) {
-            logger.error(`${name} threw`, err);
-            throw err;
+      const method = target as (...args: unknown[]) => unknown;
+      return function (this: unknown, ...args: unknown[]): unknown {
+        const name = options?.label ?? qualify(this);
+        logger[level](`${name} called`);
+        // check performance only at the "debug" level.
+        const s = level === "debug" ? performance.now() : undefined;
+        try {
+          const result = method.call(this, ...args);
+          if (result instanceof Promise) {
+            return result
+              .then((value) => {
+                if (message) logger[level](message);
+                logger[level](`${name} ended ${elapsed(s)}`);
+                return value;
+              })
+              .catch((err) => {
+                logger.error(`${name} threw`, err);
+                throw err;
+              }) as typeof result;
           }
-        };
-      } satisfies ClassMethodDecorator;
+          if (message) logger[level](message);
+          logger[level](`${name} ended ${elapsed(s)}`);
+          return result;
+        } catch (err) {
+          logger.error(`${name} threw`, err);
+          throw err;
+        }
+      };
 
     case "field":
-      return function () {
-        return function (this, initialValue) {
-          const name = qualify(this);
-          logger[level](`${name} =`, initialValue);
-          if (message) logger[level](message);
-          return initialValue;
-        };
-      } satisfies ClassFieldDecorator;
+      return function (this: unknown, initialValue: unknown): unknown {
+        const name = qualify(this);
+        logger[level](`${name} =`, initialValue);
+        if (message) logger[level](message);
+        return initialValue;
+      };
 
     case "accessor":
-      return function (target) {
-        const { get, set } = target;
-        return {
-          get() {
-            const value = get.call(this);
-            logger[level](`get ${qualify(this)}`, value);
-            if (message) logger[level](message);
-            return value;
-          },
-          set(this, value): void {
-            logger[level](`set ${qualify(this)}`, value);
-            if (message) logger[level](message);
-            set.call(this, value);
-          },
-        };
-      } satisfies ClassAccessorDecorator;
+      const { get, set } = target as ClassAccessorDecoratorTarget<
+        unknown,
+        unknown
+      >;
+      return {
+        get(this: unknown): unknown {
+          const value = get.call(this);
+          logger[level](`get ${qualify(this)}`, value);
+          if (message) logger[level](message);
+          return value;
+        },
+        set(this: unknown, value: unknown): void {
+          logger[level](`set ${qualify(this)}`, value);
+          if (message) logger[level](message);
+          set.call(this, value);
+        },
+      };
   }
 }
 

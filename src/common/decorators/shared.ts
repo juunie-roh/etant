@@ -48,15 +48,5 @@ export type ClassAccessorDecorator = <This, Value>(
   context: ClassAccessorDecoratorContext<This, Value>,
 ) => ClassAccessorDecoratorResult<This, Value> | void;
 
-/**
- * Follow the shape of {@link DecoratorContext}.
- */
-type ClassMemberDecorator =
-  | ClassMethodDecorator
-  | ClassFieldDecorator
-  | ClassGetterDecorator
-  | ClassSetterDecorator
-  | ClassAccessorDecorator;
-
 /** Union of every supported class-element decorator shape. */
-export type Decorator = ClassDecorator | ClassMemberDecorator;
+export type Decorator = (target: unknown, context: DecoratorContext) => any;
